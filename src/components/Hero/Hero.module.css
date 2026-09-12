@@ -1,0 +1,79 @@
+.hero { display: grid; gap: 40px; padding-top: 16px; padding-bottom: 72px; }
+
+.nameBlock { display: grid; gap: 10px; justify-items: start; }
+.name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .12em .3em;
+  /* Reserve the fixed burger (60px + 16px offset + 16px air) so the second word wraps under it. */
+  padding-right: 92px;
+  font-size: clamp(56px, 10vw, var(--fs-6));
+  font-weight: 400;
+  line-height: .9;
+  text-transform: uppercase;
+}
+.nameTag { font-size: var(--fs-3); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
+
+.grid { display: grid; gap: 48px; align-items: center; }
+
+.ccWrap { transform: rotate(-2deg); animation: slam .45s cubic-bezier(.2, .9, .3, 1.25) both; }
+.cc :global(.panel__in) { gap: 22px; }
+.ccTitle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .12em .3em;
+  font-size: var(--fs-hero);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.ccTitle .w, .name .w { display: inline-flex; gap: .05em; white-space: nowrap; }
+.ccTitle :global(.rWrap) { animation: pop .3s calc(.3s + var(--i, 0) * 40ms) cubic-bezier(.2, .9, .3, 1.35) both; }
+.lede { font-size: var(--fs-3); font-weight: 600; line-height: 1.35; max-width: 65ch; }
+
+.start {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  font-size: var(--fs-2);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 2px solid var(--paper);
+  animation: blink 2s linear infinite;
+}
+.start::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 12px solid var(--red);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+.start:hover { box-shadow: 4px 4px 0 var(--paper); }
+.start:hover, .start:focus-visible { animation-play-state: paused; opacity: 1; }
+
+@keyframes slam {
+  from { transform: scale(1.15) rotate(-6deg); }
+  65%  { transform: scale(.985) rotate(-1deg); }
+  to   { transform: scale(1) rotate(-2deg); }
+}
+@keyframes pop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+@keyframes blink {
+  0%, 60%   { opacity: 1; }
+  61%, 100% { opacity: .25; }
+}
+
+@media (min-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ccWrap, .ccTitle :global(.rWrap), .start { animation: none; }
+}

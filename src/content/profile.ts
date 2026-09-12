@@ -1,0 +1,185 @@
+/**
+ * Everything personal lives here. Edit this file to make the page yours;
+ * the components only render what they find below.
+ */
+
+export type Rank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type PanelTone = 'paper' | 'red';
+/** Three phone screenshots (390×844 or any 9:19.5), fanned out behind the project card. */
+export type ScreenshotTriple = readonly [string, string, string];
+
+export interface Skill {
+  readonly arcana: string;
+  readonly name: string;
+  readonly rank: Rank;
+}
+
+export interface Project {
+  readonly target: string;
+  readonly name: string;
+  readonly summary: string;
+  readonly stack: ReadonlyArray<string>;
+  readonly result: string;
+  readonly tone: PanelTone;
+  readonly screenshots: ScreenshotTriple;
+}
+
+export interface Experience {
+  readonly contract: string;
+  readonly years: string;
+  readonly role: string;
+  readonly company: string;
+  readonly bullets: ReadonlyArray<string>;
+}
+
+export interface Social {
+  readonly label: string;
+  readonly href: string;
+}
+
+export interface Education {
+  readonly school: string;
+  readonly place: string;
+}
+
+export const name = 'Pablo Joral';
+/** Square head-and-shoulders portrait; drop the file at `public/profile.jpg`. */
+export const photo = { src: '/profile.jpg', alt: name } as const;
+export const tagline = 'Phantom Dev · Mobile Engineering';
+export const email = 'joralpablo@gmail.com';
+export const lede =
+  'Pablo — software engineer and React Native specialist. Seven years shipping mobile and full-stack products, from facility lighting control at Siemens to an interpretation app with thousands of active users. I steal the hearts of users with apps that feel native, ship fast, and never drop a frame.';
+
+export const skills: ReadonlyArray<Skill> = [
+  { arcana: 'I · The Magician', name: 'React Native', rank: 10 },
+  { arcana: 'VII · The Chariot', name: 'TypeScript & React', rank: 9 },
+  { arcana: '0 · The Fool', name: 'CI/CD & store releases', rank: 9 },
+  { arcana: 'IX · The Hermit', name: 'State & data (Zustand, TanStack Query)', rank: 8 },
+  { arcana: 'XIV · Temperance', name: 'Node.js (Express, NestJS)', rank: 8 },
+  { arcana: 'XVIII · The Moon', name: 'Native modules & deep linking', rank: 7 },
+  { arcana: 'XVI · The Tower', name: 'Python (Django, Flask)', rank: 7 },
+  { arcana: 'XVII · The Star', name: 'AI workflows & MCP', rank: 7 },
+];
+
+/** "Case file" notices for projects under NDA; point `screenshots` at real captures otherwise (see README). */
+const CONFIDENTIAL_SCREENSHOTS: ScreenshotTriple = [
+  '/screenshots/confidential-1.svg',
+  '/screenshots/confidential-2.svg',
+  '/screenshots/confidential-3.svg',
+];
+
+export const projects: ReadonlyArray<Project> = [
+  {
+    target: '01',
+    name: 'Lighting Control',
+    summary:
+      'React Native app that runs automated lighting across entire facilities. Led the refactor to a feature-based architecture, then automated releases to Firebase, the App Store and Google Play.',
+    stack: ['React Native', 'TypeScript', 'Zustand', 'TanStack Query', 'Fastlane'],
+    result: 'Experimental voice assistant — AI transcription plus MCP tool calls — switches lighting zones hands-free.',
+    tone: 'paper',
+    screenshots: CONFIDENTIAL_SCREENSHOTS,
+  },
+  {
+    target: '02',
+    name: 'Tarjimly',
+    summary:
+      'Interpretation app connecting refugees with volunteer interpreters, fully released with thousands of active users. Led a complete redesign and refactor of the mobile app and built customizable in-app trainings.',
+    stack: ['React Native', 'Node.js', 'Express', 'Python', 'Django', 'PostgreSQL'],
+    result: 'Matching optimization took sessions from under 20 to over 1,000.',
+    tone: 'red',
+    screenshots: CONFIDENTIAL_SCREENSHOTS,
+  },
+  {
+    target: '03',
+    name: 'Hotel Waste Ops',
+    summary:
+      'Architected and implemented a garbage-collection tracking system for a major hotel company, from field workflows to reporting.',
+    stack: ['React Native', 'TypeScript', 'Node.js'],
+    result: "Shipped as the operations backbone across the group's properties.",
+    tone: 'red',
+    screenshots: CONFIDENTIAL_SCREENSHOTS,
+  },
+  {
+    target: '04',
+    name: 'Table Service',
+    summary: 'Redesigned and rebuilt a restaurant management and bookings app from the ground up.',
+    stack: ['React Native', 'TypeScript'],
+    result: 'Rebuilt end to end on a modern React Native stack.',
+    tone: 'paper',
+    screenshots: CONFIDENTIAL_SCREENSHOTS,
+  },
+];
+
+export const experience: ReadonlyArray<Experience> = [
+  {
+    contract: '006',
+    years: 'Jan 2026 – present',
+    role: 'Software Engineer (React Native)',
+    company: 'Siemens',
+    bullets: [
+      "Maintain and extend the lighting-control mobile app to enterprise-grade reliability standards after Siemens' acquisition of Altair.",
+      'Ship new product features with product, design and backend teams.',
+      'Built an experimental voice assistant using AI audio transcription and MCP for API calls, enabling hands-free control of lighting zones.',
+    ],
+  },
+  {
+    contract: '005',
+    years: 'Mar 2025 – Jan 2026',
+    role: 'Software Engineer (React Native)',
+    company: 'Altair',
+    bullets: [
+      'Led a major refactor to a feature-based architecture aligned with updated product requirements.',
+      'Automated the release pipeline to Firebase, the App Store and Google Play, cutting manual overhead and stabilizing delivery.',
+    ],
+  },
+  {
+    contract: '004',
+    years: '2023 – Mar 2025',
+    role: 'Software Engineer (React Native)',
+    company: 'Plexus Tech',
+    bullets: [
+      'Led major React Native projects: a garbage-collection system for a major hotel company and a rebuilt restaurant management and bookings app.',
+      'Advised and supported other teams on their React Native applications.',
+    ],
+  },
+  {
+    contract: '003',
+    years: '2020 – 2023',
+    role: 'Full-Stack Developer',
+    company: 'Tarjimly',
+    bullets: [
+      'Led a complete redesign and refactor of the mobile app for a released interpretation product with thousands of active users.',
+      'Optimized matching in Node.js and Python, growing sessions from under 20 to over 1,000; built customizable in-app trainings.',
+    ],
+  },
+  {
+    contract: '002',
+    years: '2020',
+    role: 'Full-Stack Developer',
+    company: 'Ripio',
+    bullets: [
+      'Integrated a cryptocurrency wallet with a bank API for a debit-card product.',
+      'Implemented functional and end-to-end testing in Django; contributed to the React web app.',
+    ],
+  },
+  {
+    contract: '001',
+    years: '2019 – 2020',
+    role: 'Full-Stack Developer',
+    company: 'Sophilabs',
+    bullets: [
+      'Built an image-sharing solution for schools in React.',
+      'Implemented Django middleware coordinating two ORM applications over SOAP.',
+    ],
+  },
+];
+
+export const education: ReadonlyArray<Education> = [
+  { school: 'Universidad de la República', place: 'Montevideo, Uruguay' },
+  { school: 'Cambridge University', place: 'First Certificate in English' },
+];
+
+export const socials: ReadonlyArray<Social> = [
+  { label: 'GitHub', href: 'https://github.com/pablojoral' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/pjoral/' },
+];

@@ -1,0 +1,23 @@
+/* Left edge lines up with the timeline content (28px padding + 4px rule; 40px + 4px from 768px). */
+.training { display: grid; gap: 12px; justify-items: start; margin-top: 44px; padding-left: 32px; }
+.title { color: var(--red); }
+.tabs { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+.tab {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  background: var(--paper);
+  color: var(--ink);
+  transform: skew(-8deg);
+}
+.tab > span { display: inline-block; transform: skew(8deg); }
+.place { color: var(--red-deep); }
+
+@media (min-width: 768px) {
+  .training { padding-left: 44px; }
+}
