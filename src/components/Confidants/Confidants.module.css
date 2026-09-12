@@ -1,0 +1,22 @@
+.ranks { display: grid; }
+.rank {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 18px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 3px solid var(--ink);
+}
+.rank:last-child { border-bottom: 0; }
+.arcana, .name { grid-column: 1 / -1; }
+.arcana { font-size: var(--fs-1); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--red-deep); }
+.name { font-family: var(--display); font-size: var(--fs-4); line-height: 1; text-transform: uppercase; }
+.meter { display: flex; gap: 4px; }
+.seg { width: 14px; height: 20px; border: 2px solid var(--ink); background: var(--paper); }
+.seg.on { background: var(--red); }
+.num { font-size: var(--fs-1); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+
+@media (min-width: 768px) {
+  .rank { grid-template-columns: 190px minmax(0, 1fr) auto auto; gap: 24px; }
+  .arcana, .name { grid-column: auto; }
+}

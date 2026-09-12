@@ -1,0 +1,45 @@
+/* The fan spans the card so `22%` is 22% of the card; shots stack at its horizontal centre. */
+.fan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.shot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  /* Horizontal spread of the outer shots; the 16° tilt swings their tops ~0.64w further out. */
+  --spread: 40%;
+  width: clamp(96px, 30%, 150px);
+  aspect-ratio: 390 / 844;
+  border: 3px solid var(--paper);
+  border-radius: 14px; /* phones are the one place a radius is right in this design */
+  background: var(--ink);
+  overflow: hidden;
+  transform-origin: 50% 110%;
+  transform: translate(-50%, 20%) rotate(0deg) scale(.92);
+  opacity: 0;
+  transition: transform .45s cubic-bezier(.2, .9, .3, 1.2), opacity .2s;
+}
+.shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Fanned on hover only (never on focus, so a tapped or just-closed card does not keep it open);
+   keyed off the fan's direct parent (the card) so this module never names the card's class. */
+:hover > .fan .shot { opacity: 1; }
+:hover > .fan .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-16deg) scale(1); }
+:hover > .fan .shot2 { transform: translate(-50%, -84%) rotate(0deg) scale(1); transition-delay: 60ms; }
+:hover > .fan .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(16deg) scale(1); transition-delay: 120ms; }
+
+/* From 768px the wrap inset and card width leave room for the full fan. */
+@media (min-width: 768px) {
+  .shot { --spread: 68%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot { transition: opacity .2s; }
+  :hover > .fan .shot { transition-delay: 0s; }
+}

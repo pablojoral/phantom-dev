@@ -1,0 +1,29 @@
+import { SiteNav } from './components/SiteNav/SiteNav.tsx';
+import { Hero } from './components/Hero/Hero.tsx';
+import { Confidants } from './components/Confidants/Confidants.tsx';
+import { Mementos } from './components/Mementos/Mementos.tsx';
+import { VelvetRoom } from './components/VelvetRoom/VelvetRoom.tsx';
+import { Contact } from './components/Contact/Contact.tsx';
+import { Footer } from './components/Footer/Footer.tsx';
+import styles from './App.module.css';
+
+export const App = () => (
+  <>
+    <SiteNav />
+    <div className={styles.page}>
+      <div className={styles.dots} aria-hidden="true" />
+      <Hero />
+      <main className="wrap">
+        <div className="stripe" aria-hidden="true" />
+        <Confidants />
+        <div className="stripe" aria-hidden="true" />
+        <Mementos />
+        <div className="stripe" aria-hidden="true" />
+        <VelvetRoom />
+        <div className="stripe" aria-hidden="true" />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  </>
+);

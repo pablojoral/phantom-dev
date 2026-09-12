@@ -1,0 +1,156 @@
+:root {
+  --red: #E4002B;
+  --red-deep: #9E0020;
+  --ink: #0B0B0C;
+  --ink-2: #17171A;
+  --paper: #F4F1EA;
+  --halftone: #2E2E33;
+
+  --display: Anton, Impact, 'Arial Narrow', sans-serif;
+  --ransom: Bangers, Impact, 'Arial Narrow', sans-serif;
+  --ransom-passion: 'Passion One', Impact, 'Arial Narrow', sans-serif;
+  --ransom-mono: 'Rubik Mono One', 'Courier New', monospace;
+  --ransom-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --ransom-bowlby: 'Bowlby One', Impact, 'Arial Black', sans-serif;
+  --ransom-abril: 'Abril Fatface', Georgia, 'Times New Roman', serif;
+  --ransom-stencil: 'Black Ops One', Impact, 'Arial Black', sans-serif;
+  --ransom-bebas: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  --body: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+
+  --fs-1: 14px;
+  --fs-2: 16px;
+  --fs-3: 20px;
+  --fs-4: 28px;
+  --fs-5: 44px;
+  --fs-6: 72px;
+  --fs-hero: clamp(56px, 12vw, 160px);
+
+  --pad: clamp(22px, 4vw, 40px);
+  --tear-a: polygon(0 10px, 4% 0, 21% 6px, 39% 0, 58% 8px, 77% 2px, 100% 0, calc(100% - 6px) 28%, 100% 52%, calc(100% - 9px) 76%, 100% calc(100% - 8px), 83% 100%, 62% calc(100% - 7px), 44% 100%, 20% calc(100% - 9px), 0 100%, 7px 70%, 0 46%, 8px 21%);
+  --tear-b: polygon(6px 0, 27% 7px, 49% 0, 68% 5px, 100% 0, calc(100% - 8px) 22%, 100% 47%, calc(100% - 5px) 71%, 100% 100%, 76% calc(100% - 9px), 57% 100%, 35% calc(100% - 6px), 13% 100%, 0 calc(100% - 10px), 5px 63%, 0 39%, 9px 14%);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--paper);
+  outline-offset: 3px;
+}
+body.menu-open, body.gallery-open { overflow: hidden; }
+.panel--red a:focus-visible, .panel--paper a:focus-visible { outline-color: var(--ink); }
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+}
+
+main { display: grid; gap: 72px; padding-bottom: 72px; }
+section { scroll-margin-top: 16px; }
+
+/* ---------- shared devices ---------- */
+.label {
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.panel--paper .label { color: var(--red-deep); }
+.panel--red .label {
+  display: inline-block;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 3px 10px;
+  transform: skew(-12deg);
+}
+.panel--red .label > span { display: inline-block; transform: skew(12deg); }
+
+.panel {
+  position: relative;
+  padding: var(--pad);
+  clip-path: var(--tear-a);
+}
+.panel.alt { clip-path: var(--tear-b); }
+.panel--paper { background: var(--paper); color: var(--ink); }
+.panel--red { background: var(--red); color: var(--paper); }
+.panel--ink { background: var(--ink-2); color: var(--paper); }
+.panel__in { display: grid; gap: 18px; transform: skew(-4deg); }
+
+.tilt-l { transform: rotate(-2deg); }
+.tilt-r { transform: rotate(1.5deg); }
+
+.tab {
+  display: inline-block;
+  background: var(--red);
+  color: var(--paper);
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: var(--fs-3);
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  text-decoration: none;
+  transform: skew(-12deg);
+}
+.tab > span { display: inline-block; transform: skew(12deg); }
+.tab--ink { background: var(--ink); border: 2px solid var(--paper); }
+
+.stripe {
+  height: 16px;
+  background: repeating-linear-gradient(-45deg, var(--red) 0 12px, var(--ink) 12px 24px);
+}
+
+a.tab:hover { box-shadow: 4px 4px 0 var(--paper); }
+.panel--red a.tab:hover { box-shadow: 4px 4px 0 var(--ink); }
+
+.sec-head { display: grid; gap: 14px; justify-items: start; margin-bottom: 36px; }
+.sec-head .tab { font-size: var(--fs-4); padding: 12px 28px; }
+.sec-head .sub { font-size: var(--fs-3); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; max-width: 65ch; }
+.sec-head .note {
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 2px 8px;
+  transform: skew(-12deg);
+}
+
+/* Visually hidden; also used by the legacy clipboard textarea appended to body. */
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- breakpoints ---------- */
+@media (min-width: 768px) {
+  body { font-size: 20px; }
+  .sec-head .tab { font-size: var(--fs-5); padding: 14px 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a { transition: none; }
+}

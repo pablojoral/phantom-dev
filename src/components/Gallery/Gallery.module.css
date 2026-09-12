@@ -1,0 +1,106 @@
+.gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 40; /* above the burger (30) so the close button owns that corner */
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 32px;
+  padding: 90px clamp(16px, 4vw, 40px) 40px;
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden auto;
+  animation: fade .2s ease both;
+}
+.gallery::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--halftone) 1px, transparent 1.3px);
+  background-size: 7px 7px;
+  opacity: .5;
+}
+.head { position: relative; display: grid; gap: 12px; justify-items: center; }
+.label, .caption {
+  display: inline-block;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  transform: skew(-12deg);
+}
+.label > span, .caption > span, .title > span, .close > span { display: inline-block; transform: skew(12deg); }
+.title {
+  display: inline-block;
+  background: var(--red);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: clamp(28px, 6vw, 56px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: .12em .5em;
+  transform: skew(-12deg);
+}
+.row { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; }
+.phone {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  /* Overlay fades for 200ms first, then the phones are extracted one by one. */
+  animation: extract .55s cubic-bezier(.2, .9, .3, 1.15) calc(200ms + var(--i, 0) * 140ms) both;
+}
+.phone1 { --rot: -16deg; }
+.phone2 { --rot: 0deg; }
+.phone3 { --rot: 16deg; }
+.frame {
+  width: clamp(160px, 26vw, 300px);
+  aspect-ratio: 390 / 844;
+  border: 4px solid var(--paper);
+  border-radius: 18px;
+  background: var(--ink);
+  overflow: hidden;
+}
+.frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 60px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  background: var(--red);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: var(--fs-4);
+  line-height: 1;
+  cursor: pointer;
+  transform: skew(-12deg);
+}
+.close:hover { box-shadow: 4px 4px 0 var(--paper); }
+
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes extract {
+  from { transform: translateY(60vh) rotate(var(--rot, 0deg)) scale(.55); opacity: 0; }
+  to   { transform: translate(0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+@media (max-width: 639px) {
+  .gallery { align-content: start; }
+  .row { flex-direction: column; align-items: center; }
+  .frame { width: min(70vw, 300px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery { animation: none; }
+  .phone { animation: fade .2s ease both; }
+}
