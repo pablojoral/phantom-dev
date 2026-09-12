@@ -1,4 +1,4 @@
-export const RANSOM_FONTS = ['anton', 'bangers', 'passion', 'mono', 'serif', 'bowlby', 'abril', 'stencil', 'bebas'] as const;
+export const RANSOM_FONTS = ['anton', 'bangers', 'passion', 'mono', 'serif', 'bowlby', 'abril', 'bebas'] as const;
 export type RansomFont = (typeof RANSOM_FONTS)[number];
 export type RansomStyle = RansomFont | 'mix';
 
@@ -7,6 +7,8 @@ export type RansomCut = (typeof RANSOM_CUTS)[number];
 
 export interface RansomVariation {
   readonly font: RansomFont;
+  /** Position in `DECK_SLOTS` this letter was dealt (before any substitution); −1 when one face is forced. */
+  readonly slot: number;
   readonly cut: RansomCut;
   /** Degrees, −9…+9 in 0.1° steps. */
   readonly rot: number;
@@ -55,6 +57,32 @@ export const shuffled = <T>(options: readonly [T, ...T[]], seed: number): readon
   return order;
 };
 
+/**
+ * The committed nine-slot dealing order. The deck still shuffles over these nine slots so every
+ * word keeps the face order it had before 'stencil' was retired from `RANSOM_FONTS`; that slot is
+ * never rendered — a letter dealt it gets a substitute face (see `substituteFace`).
+ */
+const DECK_SLOTS = ['anton', 'bangers', 'passion', 'mono', 'serif', 'bowlby', 'abril', 'stencil', 'bebas'] as const;
+
+// Fisher–Yates depends only on length and seed, so shuffling slot positions deals the same order as shuffling the names.
+const SLOT_POSITIONS = Array.from(DECK_SLOTS, (_, i) => i) as [number, ...number[]];
+
+const isRansomFont = (value: string): value is RansomFont => (RANSOM_FONTS as ReadonlyArray<string>).includes(value);
+
+const faceAt = (slot: number): RansomFont | undefined => {
+  const value = DECK_SLOTS[slot];
+  return value !== undefined && isRansomFont(value) ? value : undefined;
+};
+
+/** First real face after `slot` in `DECK_SLOTS` order (wrapping) that is not one of `avoid`. */
+const substituteFace = (slot: number, avoid: ReadonlyArray<RansomFont | undefined>): RansomFont => {
+  for (let step = 1; step < DECK_SLOTS.length; step += 1) {
+    const face = faceAt((slot + step) % DECK_SLOTS.length);
+    if (face !== undefined && !avoid.includes(face)) return face;
+  }
+  return RANSOM_FONTS[0];
+};
+
 /** Deals `order[index]` wrapping round; steps on if it would repeat the previous letter's pick. */
 const deal = <T>(order: readonly [T, ...T[]], index: number, avoid: T | undefined): T => {
   const first = order[index % order.length] ?? order[0];
@@ -62,16 +90,17 @@ const deal = <T>(order: readonly [T, ...T[]], index: number, avoid: T | undefine
   return order[(index + 1) % order.length] ?? order[0];
 };
 
-/** Per-text dealing order for faces and cuts: no face repeats until all nine have been used. */
+/** Per-text dealing order for face slots and cuts: nothing repeats until every slot has been dealt. */
 export interface RansomDeck {
   readonly salt: string;
-  readonly fonts: readonly [RansomFont, ...RansomFont[]];
+  /** Shuffled positions into `DECK_SLOTS`. */
+  readonly slots: readonly [number, ...number[]];
   readonly cuts: readonly [RansomCut, ...RansomCut[]];
 }
 
 export const ransomDeck = (text: string): RansomDeck => {
   const seed = hashString(text);
-  return { salt: text, fonts: shuffled(RANSOM_FONTS, seed), cuts: shuffled(RANSOM_CUTS, seed ^ 0x5bd1e995) };
+  return { salt: text, slots: shuffled(SLOT_POSITIONS, seed), cuts: shuffled(RANSOM_CUTS, seed ^ 0x5bd1e995) };
 };
 
 export interface VariationInput {
@@ -86,10 +115,16 @@ export interface VariationInput {
 export const ransomVariation = ({ char, index, style, deck, previous }: VariationInput): RansomVariation => {
   // Salted with the whole text so the same letter at the same position differs between words.
   const hash = hashString(`${deck.salt}|${char}${index}`);
-  const font = style === 'mix' ? deal(deck.fonts, index, previous?.font) : style;
   const cut = deal(deck.cuts, index, previous?.cut);
   const rot = round2(((hash >>> 8) % ROT_STEPS) / 10 - ROT_RANGE);
   const sc = round2(SC_MIN + ((hash >>> 16) % SC_STEPS) / 100);
   const dy = round2(((hash >>> 20) % DY_STEPS) / 100 - DY_RANGE);
-  return { font, cut, rot, sc, dy };
+  if (style !== 'mix') {
+    return { font: style, slot: -1, cut, rot, sc, dy };
+  }
+  // Compare dealt slots, not substituted faces, so every non-retired letter deals exactly as committed.
+  const slot = deal(deck.slots, index, previous?.slot);
+  const nextFace = faceAt(deal(deck.slots, index + 1, slot));
+  const font = faceAt(slot) ?? substituteFace(slot, [previous?.font, nextFace]);
+  return { font, slot, cut, rot, sc, dy };
 };

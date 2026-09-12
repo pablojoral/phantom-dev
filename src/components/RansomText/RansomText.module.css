@@ -29,7 +29,6 @@
 .fontSerif   { font-family: var(--ransom-serif); font-weight: 900; font-style: italic; font-size: .95em; }
 .fontBowlby  { font-family: var(--ransom-bowlby); font-size: .9em; }
 .fontAbril   { font-family: var(--ransom-abril); font-size: .98em; }
-.fontStencil { font-family: var(--ransom-stencil); font-size: .92em; }
 .fontBebas   { font-family: var(--ransom-bebas); font-size: 1.08em; }
 
 /* Paper tones. */
