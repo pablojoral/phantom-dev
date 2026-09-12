@@ -28,7 +28,6 @@ const FONT_CLASS: Readonly<Record<RansomFont, string | undefined>> = {
   serif: styles.fontSerif,
   bowlby: styles.fontBowlby,
   abril: styles.fontAbril,
-  stencil: styles.fontStencil,
   bebas: styles.fontBebas,
 };
 
