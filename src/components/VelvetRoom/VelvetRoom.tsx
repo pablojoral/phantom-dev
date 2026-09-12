@@ -20,8 +20,10 @@ export const VelvetRoom = () => {
               <h3>{entry.role}</h3>
               <p className={styles.co}>{entry.company}</p>
               <ul className={styles.outcomes}>
-                {entry.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
+                {entry.outcomes.map((outcome) => (
+                  <li key={outcome.key} style={outcome.style}>
+                    {outcome.text}
+                  </li>
                 ))}
               </ul>
             </Panel>
