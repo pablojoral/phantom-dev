@@ -21,3 +21,25 @@
 @media (min-width: 768px) {
   .training { padding-left: 44px; }
 }
+
+/* Scroll-driven entrance; the animated `rotate` composes with the tabs' `skew` transform. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .training { view-timeline: --training block; }
+    .title, .tab {
+      animation-name: trainingUp;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --training;
+      animation-range: entry 10% entry 70%;
+    }
+    .tab:nth-child(1) { animation-range: entry 18% entry 78%; }
+    .tab:nth-child(2) { animation-range: entry 26% entry 86%; }
+    .tab:nth-child(3) { animation-range: entry 34% entry 94%; }
+  }
+}
+
+@keyframes trainingUp {
+  from { opacity: 0; translate: 0 30px; rotate: 4deg; }
+  to   { opacity: 1; translate: 0 0; rotate: 0deg; }
+}

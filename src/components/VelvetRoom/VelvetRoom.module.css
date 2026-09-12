@@ -1,4 +1,14 @@
-.timeline { display: grid; gap: 44px; padding-left: 28px; border-left: 4px solid var(--red); }
+/* The spine is a pseudo-element (not a border) so scroll motion can draw it; static layout is unchanged. */
+.timeline { position: relative; display: grid; gap: 44px; padding-left: 32px; }
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: var(--red);
+}
 .entry { position: relative; }
 .entry::before {
   content: "";
@@ -18,6 +28,69 @@
 :global(.panel--red) .outcomes li::before { background: var(--paper); }
 
 @media (min-width: 768px) {
-  .timeline { padding-left: 40px; }
+  .timeline { padding-left: 44px; }
   .entry::before { left: -54px; }
+}
+
+/*
+ * Scroll-driven motion (progressive enhancement): scrubs with scroll position, no JS.
+ * Only individual `translate` / `rotate` / `scale` / `opacity` are animated, so they compose
+ * with the existing `transform` tilts (`.tilt-l/-r`, the 45° diamond) instead of replacing them.
+ * Linear timing + fill both: anything scrolled past rests in its final state.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline { view-timeline: --velvet block; }
+    .timeline::before {
+      transform-origin: top;
+      animation-name: spineDraw;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --velvet;
+      animation-range: entry 10% exit 40%;
+    }
+
+    .entry { --side: -1; view-timeline: --contract block; }
+    .entry:nth-child(even) { --side: 1; }
+
+    /* The panel carries the tilt and the torn clip-path; transforms move the clipped shape intact. */
+    .entry > :global(.panel) {
+      animation-name: contractIn;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --contract;
+      animation-range: entry 0% entry 85%;
+    }
+    .entry::before {
+      animation-name: nodeStamp;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --contract;
+      animation-range: entry 45% entry 90%;
+    }
+    .outcomes li {
+      animation-name: outcomeUp;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --contract;
+      animation-range: entry calc(40% + var(--b, 0) * 12%) entry calc(75% + var(--b, 0) * 12%);
+    }
+  }
+}
+
+@keyframes spineDraw {
+  from { scale: 1 0; }
+  to   { scale: 1 1; }
+}
+@keyframes contractIn {
+  from { opacity: 0; translate: calc(var(--side) * 14%) 40px; rotate: calc(var(--side) * 7deg); scale: .94; }
+  to   { opacity: 1; translate: 0 0; rotate: 0deg; scale: 1; }
+}
+@keyframes nodeStamp {
+  from { opacity: 0; scale: 2.2; rotate: -45deg; }
+  to   { opacity: 1; scale: 1; rotate: 0deg; }
+}
+@keyframes outcomeUp {
+  from { opacity: 0; translate: 0 14px; }
+  to   { opacity: 1; translate: 0 0; }
 }
