@@ -9,7 +9,7 @@ export const Mementos = () => {
   const { cards, cardsStyle, gallery, closeGallery, onCardClick, onCardKeyDown } = useMementos();
   return (
     <section id="projects" aria-labelledby="projects-h">
-      <SectionHead id="projects" title="M[E]MENT[O]S" sub="Projects · targets taken, hearts changed." />
+      <SectionHead id="projects" title="Pr[o]je[c]t[s]" sub="targets taken, hearts changed." />
 
       <div className={styles.cards} style={cardsStyle}>
         {cards.map(({ project, style, lastInOneColumn, lastInTwoColumns }) => (

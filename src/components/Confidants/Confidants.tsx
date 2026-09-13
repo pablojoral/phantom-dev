@@ -8,7 +8,7 @@ export const Confidants = () => {
   const rows = useConfidants();
   return (
     <section id="skills" aria-labelledby="skills-h">
-      <SectionHead id="skills" title="C[O]NFID[A]NT[S]" sub="Skills · the crew I roll with. Rank up by shipping." />
+      <SectionHead id="skills" title="Sk[i]ll[s]" sub="the crew I roll with. Rank up by shipping." />
 
       <Panel tone="paper" tilt="l" bare>
         <ol className={styles.ranks}>

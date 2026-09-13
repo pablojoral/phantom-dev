@@ -8,7 +8,7 @@ export const VelvetRoom = () => {
   const entries = useVelvetRoom();
   return (
     <section id="experience" aria-labelledby="experience-h">
-      <SectionHead id="experience" title="V[E]LVET R[O]OM" sub="Experience · contracts signed and fulfilled." />
+      <SectionHead id="experience" title="Ex[p]eri[e]nc[e]" sub="contracts signed and fulfilled." />
 
       <ol className={styles.timeline}>
         {entries.map((entry) => (
