@@ -1,4 +1,3 @@
-import { projects } from '../../content/profile.ts';
 import { Gallery } from '../Gallery/Gallery.tsx';
 import { Panel } from '../Panel/Panel.tsx';
 import { SectionHead } from '../SectionHead/SectionHead.tsx';
@@ -7,16 +6,17 @@ import { useMementos } from './useMementos.ts';
 import styles from './Mementos.module.css';
 
 export const Mementos = () => {
-  const { gallery, closeGallery, onCardClick, onCardKeyDown } = useMementos();
+  const { cards, cardsStyle, gallery, closeGallery, onCardClick, onCardKeyDown } = useMementos();
   return (
     <section id="projects" aria-labelledby="projects-h">
       <SectionHead id="projects" title="M[E]MENT[O]S" sub="Projects · targets taken, hearts changed." />
 
-      <div className={styles.cards}>
-        {projects.map((project) => (
+      <div className={styles.cards} style={cardsStyle}>
+        {cards.map(({ project, style, lastInOneColumn, lastInTwoColumns }) => (
           <article
             key={project.target}
             className={styles.card}
+            style={style}
             role="button"
             tabIndex={0}
             aria-haspopup="dialog"
@@ -24,7 +24,12 @@ export const Mementos = () => {
             onClick={onCardClick}
             onKeyDown={onCardKeyDown}
           >
-            <ScreenshotFan screenshots={project.screenshots} name={project.name} />
+            <ScreenshotFan
+              screenshots={project.screenshots}
+              name={project.name}
+              lastInOneColumn={lastInOneColumn}
+              lastInTwoColumns={lastInTwoColumns}
+            />
             <span className="vh">Press to open screenshots</span>
             <Panel tone={project.tone} alt={project.tone === 'red'}>
               <p className="label">
