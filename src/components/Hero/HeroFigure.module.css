@@ -13,6 +13,7 @@
 .figure { position: relative; }
 .shot { position: absolute; inset: 0; clip-path: var(--shard); background: var(--ink-2); }
 .shotMissing { background: var(--ink); }
+/* Full-colour photo (what hover used to reveal) with the halftone dots, which hover never faded. */
 .shot::after {
   content: "";
   position: absolute;
@@ -30,20 +31,7 @@
   object-fit: cover;
   /* 30% across puts the face right of the shard's left edge in tall desktop / tablet boxes. */
   object-position: 30% 35%;
-  filter: grayscale(1) contrast(1.3);
-  transition: filter .3s ease;
 }
-/* Multiply keeps the darks dark and the face readable; screen would wash the sweater out to red. */
-.tint {
-  position: absolute;
-  inset: 0;
-  background: var(--red);
-  mix-blend-mode: multiply;
-  opacity: .55;
-  transition: opacity .3s ease;
-}
-.figure:hover .photo, .figure:focus-within .photo { filter: grayscale(0) contrast(1); }
-.figure:hover .tint, .figure:focus-within .tint { opacity: 0; }
 
 .missing {
   position: absolute;
@@ -78,8 +66,4 @@
 
 @media (min-width: 640px) {
   .frame { translate: -18px 14px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .photo, .tint { transition: none; }
 }

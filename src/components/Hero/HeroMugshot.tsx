@@ -1,7 +1,6 @@
 import { photo } from '../../content/profile.ts';
 import { cx } from '../../utils/cx.ts';
 import { RansomText } from '../RansomText/RansomText.tsx';
-import { XMark } from '../XMark/XMark.tsx';
 import { useHeroMugshot } from './useHeroMugshot.ts';
 import styles from './HeroMugshot.module.css';
 
@@ -28,12 +27,12 @@ export const HeroMugshot = ({ className }: HeroMugshotProps) => {
               onError={onError}
             />
           )}
+          <span className={styles.tint} />
         </div>
       </div>
       <span className={styles.label}>
         <RansomText text={label} style="mix" />
       </span>
-      <XMark className={styles.mark} />
     </div>
   );
 };

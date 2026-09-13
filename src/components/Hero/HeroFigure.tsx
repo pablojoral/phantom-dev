@@ -28,7 +28,6 @@ export const HeroFigure = ({ frameClassName, className }: HeroFigureProps) => {
               onError={onError}
             />
           )}
-          <span className={styles.tint} aria-hidden="true" />
           {missing && (
             <span className={styles.missing}>
               <span>{MISSING_TEXT}</span>
