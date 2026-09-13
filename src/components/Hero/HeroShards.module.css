@@ -1,0 +1,18 @@
+/* Fills the header edge to edge; the bottom edge is cut at an angle so the glass ends torn, not ruled. */
+.shards {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 36px), 82% 100%, 58% calc(100% - 24px), 31% 100%, 0 calc(100% - 30px));
+}
+.svg { display: block; width: 100%; height: 100%; }
+
+/* SVG paint through classes keeps every colour on a token. */
+.red { fill: var(--red); }
+.deep { fill: var(--red-deep); }
+.ink { fill: var(--ink); }
+.paperFaint { fill: var(--paper); fill-opacity: .12; }
+.paper { fill: var(--paper); fill-opacity: .2; }
+.paperStrong { fill: var(--paper); fill-opacity: .3; }
+.dot { fill: var(--ink); fill-opacity: .25; }

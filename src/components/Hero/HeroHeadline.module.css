@@ -1,0 +1,33 @@
+/* Torn paper sheet with an ink rim: clip-path on the sheet, the rim as hard drop-shadow steps on the wrapper. */
+.headline {
+  justify-self: start;
+  transform: rotate(-5deg);
+  filter:
+    drop-shadow(4px 0 0 var(--ink)) drop-shadow(-4px 0 0 var(--ink))
+    drop-shadow(0 4px 0 var(--ink)) drop-shadow(0 -4px 0 var(--ink));
+}
+.sheet {
+  padding: clamp(18px, 3vw, 30px) clamp(22px, 3.5vw, 40px);
+  background: var(--paper);
+  clip-path: var(--tear-a);
+}
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .12em .3em;
+  font-size: clamp(36px, 9vw, 64px);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.w { display: inline-flex; gap: .05em; white-space: nowrap; }
+.title :global(.rWrap) { animation: pop .3s calc(.3s + var(--i, 0) * 40ms) cubic-bezier(.2, .9, .3, 1.35) both; }
+
+@keyframes pop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title :global(.rWrap) { animation: none; }
+}

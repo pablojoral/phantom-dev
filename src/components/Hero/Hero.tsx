@@ -1,30 +1,22 @@
-import { name, tagline } from '../../content/profile.ts';
 import { cx } from '../../utils/cx.ts';
-import { RansomText } from '../RansomText/RansomText.tsx';
-import { CallingCard } from './CallingCard.tsx';
-import { Portrait } from './Portrait.tsx';
-import { useHeroName } from './useHeroName.ts';
+import { HeroDossier } from './HeroDossier.tsx';
+import { HeroFigure } from './HeroFigure.tsx';
+import { HeroHeadline } from './HeroHeadline.tsx';
+import { HeroMugshot } from './HeroMugshot.tsx';
+import { HeroShards } from './HeroShards.tsx';
+import { HeroTitle } from './HeroTitle.tsx';
 import styles from './Hero.module.css';
 
-export const Hero = () => {
-  const words = useHeroName();
-  return (
-    <header className={cx(styles.hero, 'wrap')} id="top">
-      <div className={styles.nameBlock}>
-        <p className={styles.name} aria-label={name}>
-          {words.map((word) => (
-            <span key={word.key} className={styles.w} aria-hidden="true">
-              <RansomText text={word.text} startIndex={word.startIndex} salt={name} style="mix" leadTone="ink" />
-            </span>
-          ))}
-        </p>
-        <p className={styles.nameTag}>{tagline}</p>
-      </div>
-
-      <div className={styles.grid}>
-        <CallingCard />
-        <Portrait />
-      </div>
-    </header>
-  );
-};
+/** DOM order is reading order; the grid in Hero.module.css places and layers the pieces. */
+export const Hero = () => (
+  <header className={styles.hero} id="top">
+    <HeroShards className={styles.shards} />
+    <div className={cx('wrap', styles.stage)}>
+      <HeroTitle className={styles.title} />
+      <HeroHeadline className={styles.headline} />
+      <HeroDossier className={styles.dossier} />
+      <HeroFigure frameClassName={styles.figureFrame} className={styles.figure} />
+      <HeroMugshot className={styles.mugshot} />
+    </div>
+  </header>
+);
