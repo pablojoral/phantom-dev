@@ -1,66 +1,7 @@
 /* The slam runs on the wrapper so its transform never fights the panel's skew. */
 .dossier { animation: slam .45s cubic-bezier(.2, .9, .3, 1.25) both; }
 
-.panel {
-  --panel-pad: clamp(20px, 3vw, 32px);
-  padding: var(--panel-pad);
-  /* Empty landing strip for the headline's overlap (`--overlap` comes from the hero grid). */
-  padding-bottom: calc(var(--panel-pad) + var(--overlap, 0px));
-  background: var(--ink);
-  border: 5px solid var(--paper);
-  transform: skew(-3deg);
-}
-.inner { display: grid; gap: 22px; transform: skew(3deg); }
-
 .fields { display: grid; gap: 14px; margin: 0; }
-.field { display: grid; gap: 4px; }
-.label {
-  font-size: var(--fs-1);
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: lowercase;
-  color: var(--paper);
-}
-/* Bar row. The tab (when present) is an in-flow flex item, so it cannot reach the label row above
-   and the bar text always starts after it. */
-.value { display: flex; align-items: center; margin: 0; }
-.bar {
-  flex: 1 1 auto;
-  min-width: 0;
-  padding: 8px 18px;
-  background: var(--red);
-  border: 3px solid var(--paper);
-  color: var(--paper);
-  font-family: var(--display);
-  font-size: var(--fs-3);
-  line-height: 1;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  transform: skew(-12deg);
-}
-.bar > span { display: inline-block; transform: skew(12deg); }
-
-/* Pulled past the panel's left border (field inset = padding + 5px border) plus the overhang;
-   the bar tucks 12px under its right end. */
-.tab {
-  --overhang: 10px;
-  position: relative;
-  z-index: 1;
-  flex: none;
-  margin: 0 -12px 0 calc(-1 * (var(--panel-pad) + 5px + var(--overhang)));
-  padding: 2px 8px;
-  background: var(--ink);
-  border: 2px solid var(--paper);
-  color: var(--red);
-  font-family: var(--display);
-  font-size: 12px;
-  line-height: 1.2;
-  letter-spacing: .08em;
-  white-space: nowrap;
-  text-transform: uppercase;
-  transform: skew(-12deg) rotate(-6deg);
-}
-.tab > span { display: inline-block; transform: skew(12deg); }
 
 .lede {
   max-width: 52ch;
@@ -69,15 +10,6 @@
   font-size: var(--fs-3);
   font-weight: 600;
   line-height: 1.35;
-}
-
-@media (min-width: 640px) {
-  .tab { --overhang: 16px; padding: 3px 10px; font-size: var(--fs-1); }
-}
-
-/* The in-flow tab narrows the bar; below 1024px the larger size wraps "Mobile Engineering". */
-@media (min-width: 1024px) {
-  .bar { font-size: var(--fs-4); }
 }
 
 @keyframes slam {

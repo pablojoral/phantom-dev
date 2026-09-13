@@ -11,9 +11,9 @@ export interface Shard {
 
 /*
  * Shattered-glass ground, drawn in paint order. The first eight wedges fan out from a point
- * behind the dossier (≈560,360) and tile the whole viewBox; the rest are splinters on top.
+ * (≈560,360, behind the hero's dossier) and tile the whole viewBox; the rest are splinters on top.
  */
-export const HERO_SHARDS: ReadonlyArray<Shard> = [
+export const SHARDS: ReadonlyArray<Shard> = [
   { key: 'w1', points: '0,0 520,0 560,360 0,210', tone: 'red', textured: true },
   { key: 'w2', points: '520,0 760,0 560,360', tone: 'deep', textured: false },
   { key: 'w3', points: '760,0 1200,0 1200,300 560,360', tone: 'red', textured: true },

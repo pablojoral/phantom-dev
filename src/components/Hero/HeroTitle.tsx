@@ -1,5 +1,6 @@
 import { name, tagline } from '../../content/profile.ts';
 import { cx } from '../../utils/cx.ts';
+import { OutlinedRansom } from '../OutlinedRansom/OutlinedRansom.tsx';
 import { RansomText } from '../RansomText/RansomText.tsx';
 import { useHeroName } from './useHeroName.ts';
 import styles from './HeroTitle.module.css';
@@ -15,13 +16,13 @@ export const HeroTitle = ({ className }: HeroTitleProps) => {
       <p className={styles.tag}>
         <span>{tagline}</span>
       </p>
-      <p className={styles.name} aria-label={name}>
+      <OutlinedRansom className={styles.name} label={name}>
         {words.map((word) => (
           <span key={word.key} className={styles.w} aria-hidden="true">
             <RansomText text={word.text} startIndex={word.startIndex} salt={name} style="mix" leadTone="ink" />
           </span>
         ))}
-      </p>
+      </OutlinedRansom>
     </div>
   );
 };

@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { lede, tagline } from '../../content/profile.ts';
+import type { DossierTab } from '../Dossier/DossierField.tsx';
 
 export interface DossierField {
   readonly key: string;
   readonly label: string;
   readonly value: string;
-  /** Small tab hanging off the field's left edge, if any. */
-  readonly tab: string | undefined;
+  /** Small tab hanging off the bar's left edge, if any. */
+  readonly tab: DossierTab | undefined;
 }
 
 export interface HeroDossierState {
@@ -22,7 +23,7 @@ const toFields = (text: string): ReadonlyArray<DossierField> => {
   const [codename = '', specialty = ''] = text.split(TAGLINE_SEPARATOR).map((part) => part.trim());
   const fields: ReadonlyArray<DossierField> = [
     { key: 'codename', label: 'codename', value: codename, tab: undefined },
-    { key: 'specialty', label: 'specialty', value: specialty, tab: TAB_TEXT },
+    { key: 'specialty', label: 'specialty', value: specialty, tab: { kind: 'label', text: TAB_TEXT } },
   ];
   return fields.filter((field) => field.value.length > 0);
 };

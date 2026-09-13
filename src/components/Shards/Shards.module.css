@@ -1,12 +1,14 @@
-/* Fills the header edge to edge; the bottom edge is cut at an angle so the glass ends torn, not ruled. */
+/* Fills its positioned parent edge to edge; one edge is cut at an angle so the glass ends torn, not ruled. */
 .shards {
   position: absolute;
   inset: 0;
   overflow: clip;
   pointer-events: none;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 36px), 82% 100%, 58% calc(100% - 24px), 31% 100%, 0 calc(100% - 30px));
 }
+.edgeBottom { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 36px), 82% 100%, 58% calc(100% - 24px), 31% 100%, 0 calc(100% - 30px)); }
+.edgeTop { clip-path: polygon(0 30px, 31% 0, 58% 24px, 82% 0, 100% 36px, 100% 100%, 0 100%); }
 .svg { display: block; width: 100%; height: 100%; }
+.mirror { transform: scaleX(-1); }
 
 /* SVG paint through classes keeps every colour on a token. */
 .red { fill: var(--red); }

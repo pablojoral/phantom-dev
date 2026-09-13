@@ -1,6 +1,6 @@
 # Phantom Dev
 
-A Persona 5 styled personal portfolio page for a mobile software engineer: fixed hamburger + full-screen pause menu, a hero laid out like a Persona 5 name-entry menu (shattered-glass ground, papercut name, dossier panel, a full-colour portrait and a red-tinted mugshot), and sections for skills (Confidants), projects (Mementos), experience (Velvet Room) and contact.
+A Persona 5 styled personal portfolio page for a mobile software engineer: fixed hamburger + full-screen pause menu, a hero laid out like a Persona 5 name-entry menu (shattered-glass ground, papercut name, dossier panel, a full-colour portrait and a red-tinted mugshot), sections for skills, projects and experience, and a closing contact scene that mirrors the hero, with the footer on the same shattered glass.
 
 Built with Vite, React 19 and TypeScript; styles are plain CSS with CSS Modules per component.
 

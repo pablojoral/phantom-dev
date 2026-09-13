@@ -1,4 +1,6 @@
 import { cx } from '../../utils/cx.ts';
+import { Dossier } from '../Dossier/Dossier.tsx';
+import { DossierField } from '../Dossier/DossierField.tsx';
 import { useHeroDossier } from './useHeroDossier.ts';
 import styles from './HeroDossier.module.css';
 
@@ -11,28 +13,14 @@ export const HeroDossier = ({ className }: HeroDossierProps) => {
   const { fields, lede } = useHeroDossier();
   return (
     <div className={cx(styles.dossier, className)}>
-      <div className={styles.panel}>
-        <div className={styles.inner}>
-          <dl className={styles.fields}>
-            {fields.map((field) => (
-              <div key={field.key} className={styles.field}>
-                <dt className={styles.label}>{field.label}</dt>
-                <dd className={styles.value}>
-                  {field.tab !== undefined && (
-                    <span className={styles.tab} aria-hidden="true">
-                      <span>{field.tab}</span>
-                    </span>
-                  )}
-                  <span className={styles.bar}>
-                    <span>{field.value}</span>
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-          <p className={styles.lede}>{lede}</p>
-        </div>
-      </div>
+      <Dossier>
+        <dl className={styles.fields}>
+          {fields.map((field) => (
+            <DossierField key={field.key} label={field.label} value={field.value} tab={field.tab} />
+          ))}
+        </dl>
+        <p className={styles.lede}>{lede}</p>
+      </Dossier>
     </div>
   );
 };

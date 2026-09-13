@@ -1,0 +1,12 @@
+/*
+ * The rim is built from hard drop-shadow steps (a 0-offset spread does not exist): four ink steps,
+ * then four red steps around the result, so every scrap cluster gets an ink rim inside a red one.
+ * It sits on the word-group parent because `.rWrap` / `.r` stay unstyled hooks owned by RansomText.
+ */
+.outlined {
+  filter:
+    drop-shadow(3px 0 0 var(--ink)) drop-shadow(-3px 0 0 var(--ink))
+    drop-shadow(0 3px 0 var(--ink)) drop-shadow(0 -3px 0 var(--ink))
+    drop-shadow(3px 0 0 var(--red)) drop-shadow(-3px 0 0 var(--red))
+    drop-shadow(0 3px 0 var(--red)) drop-shadow(0 -3px 0 var(--red));
+}

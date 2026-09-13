@@ -15,11 +15,7 @@
 }
 .tag > span { display: inline-block; transform: skew(12deg); }
 
-/*
- * Two stacked words, the second pushed right, tilted as one block. The rim is built from hard
- * drop-shadow steps (a 0-offset spread does not exist): four ink steps, then four red steps
- * around the result, so every scrap cluster gets an ink rim inside a red one.
- */
+/* Two stacked words, the second pushed right, tilted as one block; the rim comes from OutlinedRansom. */
 .name {
   display: grid;
   justify-items: start;
@@ -29,11 +25,6 @@
   line-height: .9;
   text-transform: uppercase;
   transform: rotate(-6deg);
-  filter:
-    drop-shadow(3px 0 0 var(--ink)) drop-shadow(-3px 0 0 var(--ink))
-    drop-shadow(0 3px 0 var(--ink)) drop-shadow(0 -3px 0 var(--ink))
-    drop-shadow(3px 0 0 var(--red)) drop-shadow(-3px 0 0 var(--red))
-    drop-shadow(0 3px 0 var(--red)) drop-shadow(0 -3px 0 var(--red));
 }
 .w { display: inline-flex; gap: .05em; white-space: nowrap; }
 .w + .w { margin-top: .06em; margin-left: 1.1em; }

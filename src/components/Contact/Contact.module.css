@@ -1,59 +1,143 @@
-.contact :global(.panel__in) { gap: 28px; justify-items: start; }
-.big {
-  font-family: var(--display);
-  font-size: clamp(40px, 9vw, var(--fs-6));
+/*
+ * Closing scene, mirroring the hero: the glass torn along its top edge, the title and chip on the
+ * left tilted +6deg, the dossier skewed the other way on the right, the paper sheet on the left
+ * climbing onto the dossier. Layers: shards 0 (outside the stage), dossier 2, title / sheet 4.
+ * --overlap: how far the sheet may climb onto the dossier. Dossier adds exactly that much empty
+ * bottom padding, and the sheet climbs 16px less (its tilt drops its right end), so it lands on padding.
+ */
+.ending { position: relative; padding: 96px 0 32px; }
+.shards { z-index: 0; }
+.stage { display: grid; gap: 56px; }
+
+/* ---------- mobile (< 640px): title, dossier, sheet over the dossier's foot ---------- */
+.contact {
+  --overlap: 48px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "title" "dossier" "sheet";
+  gap: 28px;
+}
+/* No pointer events: at desktop its (transparent) grid box lies over the dossier's email row and COPY tab. */
+.title { grid-area: title; display: grid; gap: 12px; justify-items: start; z-index: 4; pointer-events: none; }
+/* Below 1024px the menu's Contact link lands this chip 16px from the top, beside the fixed burger:
+   keep it left-aligned and clear of the burger (60px + 16px offset + 16px air). */
+.tag {
+  display: inline-block;
+  max-width: calc(100% - 92px);
+  justify-self: start;
+  padding: 3px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transform: skew(-12deg);
+}
+.tag > span { display: inline-block; transform: skew(12deg); }
+/* Mirrored hero name treatment: tilted +6deg the other way; the rim comes from OutlinedRansom. */
+.name {
+  display: grid;
+  justify-items: start;
+  font-size: clamp(36px, 10vw, 84px);
+  font-weight: 400;
   line-height: .9;
   text-transform: uppercase;
-  transform: skew(-6deg);
+  transform: rotate(6deg);
+  /* The chip sits right above and the +6deg tilt lifts the letters; the lift grows with size, so em. */
+  margin-top: .45em;
+}
+.line { display: flex; flex-wrap: wrap; gap: 0 .3em; }
+.w { display: inline-flex; gap: .05em; white-space: nowrap; }
+
+.dossier { grid-area: dossier; z-index: 2; }
+.fields { display: grid; gap: 14px; margin: 0; }
+
+.sheet { grid-area: sheet; justify-self: start; margin-top: calc(16px - var(--overlap)); z-index: 4; }
+.sheetInner { display: grid; gap: 14px; justify-items: start; }
+.kicker { color: var(--red-deep); }
+.heart {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .12em .3em;
+  font-size: clamp(34px, 8vw, 60px);
+  line-height: 1;
+  text-transform: uppercase;
 }
 .btn {
   display: inline-block;
-  background: var(--paper);
-  color: var(--red-deep);
-  font-family: var(--display);
-  font-size: clamp(28px, 6vw, var(--fs-5));
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: .02em;
-  padding: 16px 28px;
+  padding: 12px 22px;
+  background: var(--red);
   border: 4px solid var(--ink);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: clamp(22px, 4vw, 32px);
+  line-height: 1;
+  letter-spacing: .02em;
   text-decoration: none;
+  text-transform: uppercase;
   transform: skew(-8deg);
 }
 .btn > span { display: inline-block; transform: skew(8deg); }
-.btn:hover { box-shadow: 4px 4px 0 var(--paper); }
-:global(.panel--red) .btn:hover { box-shadow: 4px 4px 0 var(--ink); }
-.emailRow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
-.email {
+.btn:focus-visible { outline-color: var(--ink); }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { box-shadow: 4px 4px 0 var(--ink); }
+}
+
+.footer { display: grid; gap: 8px; justify-items: start; }
+.chip {
   display: inline-block;
   max-width: 100%;
-  background: var(--paper);
-  color: var(--ink);
-  font-size: var(--fs-3);
-  font-weight: 600;
-  letter-spacing: .04em;
-  padding: 8px 16px;
-  transform: skew(-12deg);
-}
-.email > span { display: inline-block; transform: skew(12deg); overflow-wrap: anywhere; }
-.copy {
-  display: inline-block;
-  border: 2px solid var(--paper);
+  padding: 4px 12px;
   background: var(--ink);
   color: var(--paper);
-  font-family: var(--display);
   font-size: var(--fs-2);
-  line-height: 1;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: 9px 18px;
-  cursor: pointer;
+  font-weight: 600;
   transform: skew(-12deg);
 }
-.copy > span { display: inline-block; transform: skew(12deg); }
-.copy:hover { box-shadow: 4px 4px 0 var(--ink); }
-.social { display: flex; flex-wrap: wrap; gap: 14px 18px; }
+.chip > span { display: inline-block; transform: skew(12deg); }
+.chipSmall { font-size: var(--fs-1); letter-spacing: .04em; }
 
-@media (prefers-reduced-motion: reduce) {
-  .btn { transition: none; }
+/* ---------- tablet (640–1023px) ---------- */
+@media (min-width: 640px) {
+  .contact { --overlap: 56px; }
+  .tag { font-size: var(--fs-1); letter-spacing: .3em; white-space: nowrap; }
+}
+
+/* ---------- desktop (≥ 1024px): 12-column composition ---------- */
+@media (min-width: 1024px) {
+  .contact {
+    --overlap: 72px;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto auto auto;
+    grid-template-areas: none;
+    column-gap: 16px;
+    row-gap: 0;
+  }
+  .title { grid-column: 1 / 8; grid-row: 1; }
+  .tag { max-width: 100%; justify-self: end; }
+  .name { font-size: clamp(40px, 4.2vw, 56px); }
+  /* Raised so its top sits beside the title. */
+  /* Columns 7–12 leave a clear column between the title's last letter and the COPY tab. */
+  .dossier { grid-column: 7 / 13; grid-row: 1 / 3; margin-top: var(--dossier-drop, 96px); }
+  .sheet { grid-column: 1 / 9; grid-row: 3; }
+}
+
+/* The papercut letters pop in with the hero's stagger, scrubbed by scroll (never on load: off-screen). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sheet { view-timeline: --contact-sheet block; }
+    .heart :global(.rWrap) {
+      animation-name: pop;
+      animation-timing-function: cubic-bezier(.2, .9, .3, 1.35);
+      animation-fill-mode: both;
+      animation-timeline: --contact-sheet;
+      animation-range: entry calc(10% + var(--i, 0) * 5%) entry calc(40% + var(--i, 0) * 5%);
+    }
+  }
+}
+
+@keyframes pop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
 }

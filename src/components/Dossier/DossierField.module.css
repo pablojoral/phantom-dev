@@ -1,0 +1,66 @@
+.field { display: grid; gap: 4px; }
+.label {
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: lowercase;
+  color: var(--paper);
+}
+/* Bar row. The tab (when present) is an in-flow flex item, so it cannot reach the label row above
+   and the bar text always starts after it. */
+.value { display: flex; align-items: center; margin: 0; }
+.bar {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 8px 18px;
+  background: var(--red);
+  border: 3px solid var(--paper);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: var(--fs-3);
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  transform: skew(-12deg);
+}
+.bar > span { display: inline-block; transform: skew(12deg); }
+.plain { text-transform: none; letter-spacing: .02em; }
+.plain > span { overflow-wrap: anywhere; }
+.link { display: block; text-decoration: none; }
+
+/* Pulled past the panel's left border (field inset = padding + 5px border) plus the overhang;
+   the bar tucks 12px under its right end. `--panel-pad` comes from the Dossier panel. */
+.tab {
+  --overhang: 10px;
+  position: relative;
+  z-index: 1;
+  flex: none;
+  margin: 0 -12px 0 calc(-1 * (var(--panel-pad) + 5px + var(--overhang)));
+  padding: 2px 8px;
+  background: var(--ink);
+  border: 2px solid var(--paper);
+  color: var(--red);
+  font-family: var(--display);
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  transform: skew(-12deg) rotate(-6deg);
+}
+.tab > span { display: inline-block; transform: skew(12deg); }
+/* Paper text: red on ink is ~4.1:1 at this size, below AA for a control. */
+.tabButton { color: var(--paper); cursor: pointer; }
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover, .tabButton:hover { box-shadow: 4px 4px 0 var(--paper); }
+}
+
+@media (min-width: 640px) {
+  .tab { --overhang: 16px; padding: 3px 10px; font-size: var(--fs-1); }
+}
+
+/* The in-flow tab narrows the bar; below 1024px the larger size wraps "Mobile Engineering". */
+@media (min-width: 1024px) {
+  .bar { font-size: var(--fs-4); }
+}
