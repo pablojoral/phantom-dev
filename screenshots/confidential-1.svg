@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" role="img" aria-label="Confidential screenshot 1">
+<!-- Palette mirrors the src/styles/global.css tokens: ink #0B0B0C, red #E4002B, paper #F4F1EA, deep red #9E0020. SVGs loaded via img cannot read CSS custom properties. -->
+<rect width="390" height="844" fill="#0B0B0C"/>
+<polygon points="0,0 390,0 390,118 0,136" fill="#E4002B"/>
+<rect x="28" y="52" width="190" height="22" fill="#F4F1EA" transform="skewX(-12)"/>
+<text x="195" y="520" text-anchor="middle" font-family="Anton, Impact, sans-serif" font-size="260" fill="#F4F1EA" fill-opacity=".08">01</text>
+<rect x="28" y="176" width="52" height="52" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="182" width="200" height="16" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="208" width="140" height="12" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="252" width="52" height="52" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="258" width="200" height="16" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="284" width="140" height="12" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="328" width="52" height="52" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="334" width="200" height="16" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="360" width="140" height="12" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="404" width="52" height="52" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="410" width="200" height="16" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="436" width="140" height="12" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="480" width="52" height="52" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="486" width="200" height="16" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="512" width="140" height="12" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="556" width="52" height="52" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="562" width="200" height="16" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="588" width="140" height="12" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="632" width="52" height="52" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="638" width="200" height="16" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="96" y="664" width="140" height="12" fill="#F4F1EA" fill-opacity=".25"/>
+<polygon points="42,720 348,720 340,776 34,776" fill="#E4002B"/>
+<rect x="120" y="742" width="150" height="14" fill="#F4F1EA" transform="skewX(-12)"/>
+<polygon points="0,136 390,118 390,844 0,844" fill="#0B0B0C" fill-opacity=".45"/>
+<g transform="translate(195 230) rotate(-18)" font-family="Anton, Impact, sans-serif" fill="#E4002B" fill-opacity=".85" text-anchor="middle"><rect x="-180" y="-56" width="360" height="112" fill="none" stroke="#E4002B" stroke-width="6" stroke-dasharray="140 3 90 4"/><rect x="-172" y="-48" width="344" height="96" fill="none" stroke="#E4002B" stroke-width="2.5" stroke-dasharray="120 3 70 4"/><text y="19" font-size="54" letter-spacing="2">CONFIDENTIAL</text></g>
+<polygon points="28,318 362,318 350,362 16,362" fill="#F4F1EA"/><text x="44" y="348" font-family="Anton, Impact, sans-serif" font-size="18" letter-spacing="1.5" fill="#0B0B0C" textLength="290" lengthAdjust="spacingAndGlyphs">SCREENSHOTS WITHHELD · NDA</text>
+</svg>
