@@ -13,8 +13,6 @@ concurrency: preview-${{ github.event.number }}
 
 jobs:
   preview:
-    # Dependabot runs get a read-only token, so the gh-pages push would fail; quality checks still run.
-    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
