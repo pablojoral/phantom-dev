@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import type { KeyboardEvent, MouseEvent, RefObject } from 'react';
-import type { Project } from '../../content/profile.ts';
+import type { ShowcaseProject } from '../../content/profile.ts';
 import { useScreenshotFan } from '../Mementos/useScreenshotFan.ts';
 import type { FanShot } from '../Mementos/useScreenshotFan.ts';
 
@@ -8,7 +8,7 @@ const BODY_LOCK_CLASS = 'gallery-open';
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export interface GalleryOptions {
-  readonly project: Project;
+  readonly project: ShowcaseProject;
   readonly opener: HTMLElement;
   readonly onClose: () => void;
 }

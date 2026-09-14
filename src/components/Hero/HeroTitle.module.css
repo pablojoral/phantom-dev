@@ -26,6 +26,9 @@
   line-height: .9;
   text-transform: uppercase;
   transform: rotate(-6deg);
+  /* The -6° tilt and the scraps' own lift raise the name's top-right letters ~.2em above its box;
+     .3em (on top of the 12px stack gap) keeps them ≥14px below the tagline chip at every width. */
+  margin-top: .3em;
 }
 .w { display: inline-flex; gap: .05em; white-space: nowrap; }
 .w + .w { margin-top: .06em; margin-left: 1.1em; }

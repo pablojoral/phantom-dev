@@ -8,14 +8,24 @@ export interface HeroHeadlineProps {
   readonly className?: string | undefined;
 }
 
+/** Rotating papercut headline. Every phrase is stacked in one cell, so the sheet never changes size. */
 export const HeroHeadline = ({ className }: HeroHeadlineProps) => {
-  const { label, words } = useHeroHeadline();
+  const { label, phrases, sheetRef } = useHeroHeadline();
   return (
-    <PaperSheet className={cx(styles.headline, className)}>
+    <PaperSheet ref={sheetRef} className={cx(styles.headline, className)}>
       <h1 className={styles.title} aria-label={label}>
-        {words.map((word) => (
-          <span key={word.key} className={styles.w} aria-hidden="true">
-            <RansomText text={word.text} startIndex={word.startIndex} style="mix" />
+        {phrases.map((phrase) => (
+          <span
+            key={phrase.key}
+            className={cx(styles.phrase, phrase.active && styles.active, phrase.leaving && styles.leaving)}
+            style={phrase.style}
+            aria-hidden="true"
+          >
+            {phrase.words.map((word) => (
+              <span key={word.key} className={styles.w}>
+                <RansomText text={word.text} startIndex={word.startIndex} style="mix" />
+              </span>
+            ))}
           </span>
         ))}
       </h1>

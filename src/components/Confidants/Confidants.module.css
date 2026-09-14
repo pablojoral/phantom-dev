@@ -23,8 +23,10 @@
   translate: 0 var(--dy, 0px);
   transition: rotate .2s ease, translate .2s ease, filter .2s ease;
 }
-/* The one extra accent on signature pieces. */
-.signature { filter: drop-shadow(8px 8px 0 var(--red)); }
+/* The one extra accent on signature pieces. The extra margin (more on the right and bottom, where the
+   8px offset shadow falls) roughly doubles the gap around them so tilted neighbours and their shadows
+   never touch; core and support chips keep the plain cluster gap among themselves. */
+.signature { margin: 6px 8px 10px 4px; filter: drop-shadow(8px 8px 0 var(--red)); }
 
 /* ---------- ink chips (the Mementos stack-chip language); signature and core are the same chip, larger ---------- */
 .chip {
@@ -76,6 +78,7 @@
 
 @media (min-width: 640px) {
   .collage { gap: 20px 24px; }
+  .signature { margin: 8px 16px 12px 12px; }
 }
 
 @media (hover: hover) and (pointer: fine) {
