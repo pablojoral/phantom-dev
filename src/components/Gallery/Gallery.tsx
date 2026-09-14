@@ -1,13 +1,13 @@
 import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
-import type { Project } from '../../content/profile.ts';
+import type { ShowcaseProject } from '../../content/profile.ts';
 import { cx } from '../../utils/cx.ts';
 import type { FanPosition } from '../Mementos/useScreenshotFan.ts';
 import { useGallery } from './useGallery.ts';
 import styles from './Gallery.module.css';
 
 export interface GalleryProps {
-  readonly project: Project;
+  readonly project: ShowcaseProject;
   /** The card that opened the gallery; focus returns here on close. */
   readonly opener: HTMLElement;
   readonly onClose: () => void;

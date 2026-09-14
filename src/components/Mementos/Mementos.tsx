@@ -15,10 +15,16 @@ export const Mementos = () => {
       <SectionHead id="projects" title="Pr[o]je[c]t[s]" sub="targets taken, hearts changed." />
 
       <div className={styles.cards}>
-        {cards.map(({ project, confidential, fanOpen, fanClosing, hoverClosing, notice, hint }) => (
+        {cards.map(({ project, confidential, screenshots, fanOpen, fanClosing, hoverClosing, notice, hint }) => (
           <article
             key={project.target}
-            className={cx(styles.card, fanOpen && styles.fanOpen, fanClosing && styles.fanClosing, hoverClosing && styles.hoverClosing)}
+            className={cx(
+              styles.card,
+              confidential && styles.confidential,
+              fanOpen && styles.fanOpen,
+              fanClosing && styles.fanClosing,
+              hoverClosing && styles.hoverClosing,
+            )}
             role="button"
             tabIndex={0}
             aria-haspopup={confidential ? undefined : 'dialog'}
@@ -28,7 +34,9 @@ export const Mementos = () => {
             onPointerEnter={onCardPointerEnter}
             onPointerLeave={onCardPointerLeave}
           >
-            <ScreenshotFan screenshots={project.screenshots} name={project.name} open={fanOpen} closing={fanClosing} />
+            {screenshots !== null && (
+              <ScreenshotFan screenshots={screenshots} name={project.name} open={fanOpen} closing={fanClosing} />
+            )}
             <span className="vh">{hint}</span>
             {/* Keyed by the notice, so every activation remounts the wrapper and the shake restarts. */}
             <div key={`body-${notice?.key ?? 0}`} className={cx(styles.body, notice !== null && styles.shake)}>

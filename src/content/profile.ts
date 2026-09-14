@@ -26,15 +26,27 @@ export interface Skill {
   readonly tier: SkillTier;
 }
 
-export interface Project {
+interface ProjectBase {
   readonly target: string;
   readonly name: string;
   readonly summary: string;
   readonly stack: ReadonlyArray<string>;
   readonly result: string;
   readonly tone: PanelTone;
+}
+
+/** A project with real captures: the card fans them out and opens them in a gallery. */
+export interface ShowcaseProject extends ProjectBase {
+  readonly confidential?: false;
   readonly screenshots: ScreenshotTriple;
 }
+
+/** A project under NDA: no screenshots; activating the card shows the classified notice. */
+export interface ConfidentialProject extends ProjectBase {
+  readonly confidential: true;
+}
+
+export type Project = ShowcaseProject | ConfidentialProject;
 
 export interface Experience {
   readonly contract: string;
@@ -82,20 +94,13 @@ export const skills: ReadonlyArray<Skill> = [
   { name: 'AI workflows & MCP', tier: 'support' },
 ];
 
-/** "Case file" notices for projects under NDA; point `screenshots` at real captures otherwise (see README). */
-export const CONFIDENTIAL_SCREENSHOTS: ScreenshotTriple = [
-  { src: asset('/screenshots/confidential-1.svg'), width: 390, height: 844 },
-  { src: asset('/screenshots/confidential-2.svg'), width: 390, height: 844 },
-  { src: asset('/screenshots/confidential-3.svg'), width: 390, height: 844 },
-];
+/** Projects under NDA (`confidential: true`) have no screenshots and show this notice instead of a gallery. */
+export const isConfidential = (project: Project): project is ConfidentialProject => project.confidential === true;
 
-/** Placeholder projects: activating the card shows this notice instead of opening the gallery. */
-export const isConfidential = (project: Project): boolean => project.screenshots === CONFIDENTIAL_SCREENSHOTS;
-
-/** Copy for the notice a confidential card shows (the phrases on the placeholder screens). */
+/** Copy for the notice a confidential card shows. */
 export const confidentialNotice = {
   stamp: 'Classified',
-  message: 'Screenshots withheld under NDA · Ask me for a live demo',
+  message: 'Screenshots withheld under NDA',
 } as const;
 
 /** Toggled iQ, the product name of the Lighting Control app. */
@@ -140,7 +145,7 @@ export const projects: ReadonlyArray<Project> = [
     stack: ['React Native', 'TypeScript', 'Node.js'],
     result: "Shipped as the operations backbone across the group's properties.",
     tone: 'red',
-    screenshots: CONFIDENTIAL_SCREENSHOTS,
+    confidential: true,
   },
   {
     target: '04',
@@ -149,7 +154,7 @@ export const projects: ReadonlyArray<Project> = [
     stack: ['React Native', 'TypeScript'],
     result: 'Rebuilt end to end on a modern React Native stack.',
     tone: 'paper',
-    screenshots: CONFIDENTIAL_SCREENSHOTS,
+    confidential: true,
   },
 ];
 

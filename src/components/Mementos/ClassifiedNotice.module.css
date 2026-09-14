@@ -4,6 +4,8 @@
   inset: 0;
   z-index: 3;
   display: grid;
+  /* Content-sized column that may shrink on narrow cards, so the strip keeps one line when it fits. */
+  grid-template-columns: minmax(0, max-content);
   place-content: center;
   justify-items: center;
   gap: 14px;
@@ -30,7 +32,9 @@
   animation: slam .25s cubic-bezier(.2, .9, .3, 1.2) both;
 }
 .strip {
-  max-width: min(100%, 36ch);
+  /* 100% of the notice column: one line when the card has room, a balanced wrap when it doesn't. */
+  max-width: 100%;
+  text-wrap: balance;
   padding: 6px 14px;
   background: var(--ink);
   color: var(--paper);
