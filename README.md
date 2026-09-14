@@ -26,7 +26,7 @@ Each project card fans out three phone screenshots on hover (scroll on touch) an
 GitHub Pages publishes the `gh-pages` branch, which holds production at its root and pull-request previews under `pr-preview/`.
 
 - **Production:** merging to `master` runs `.github/workflows/deploy-pages.yml` (lint, build, push `dist` to `gh-pages`) and updates <https://pablojoral.github.io/phantom-dev/>. It can also be run by hand from the Actions tab. Production deploys leave `pr-preview/` untouched.
-- **Previews:** every pull request into `staging` gets its own build at `https://pablojoral.github.io/phantom-dev/pr-preview/pr-<n>/` (`.github/workflows/pr-preview.yml`). A comment on the PR links to it, it updates on every push, and it is removed when the PR closes. Dependabot PRs get no preview (their token is read-only), but the quality checks still run on them.
+- **Previews:** every pull request into `staging` gets its own build at `https://pablojoral.github.io/phantom-dev/pr-preview/pr-<n>/` (`.github/workflows/pr-preview.yml`). A comment on the PR links to it, it updates on every push, and it is removed when the PR closes.
 
 One-time setup in the repository settings:
 
@@ -46,7 +46,3 @@ A project page lives under a sub-path, so the workflows pass it to the build as 
 - a link check with lychee over the built HTML and this README (mail links, `linkedin.com`, `localhost`, the bare Google Fonts preconnect hosts and the Pages site itself excluded).
 
 Run Lighthouse locally with `npm run build && npx @lhci/cli@0.14 autorun --config=./lighthouserc.json`; reports land in `.lighthouseci/` (git-ignored).
-
-### Dependencies
-
-Dependabot (`.github/dependabot.yml`) opens update PRs against `staging` every Monday: npm minor and patch updates in one grouped PR, npm majors in another, and GitHub Actions updates in a third. At most 5 open PRs per ecosystem.
