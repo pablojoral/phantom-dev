@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { cx } from '../../utils/cx.ts';
 import styles from './PaperSheet.module.css';
 
@@ -10,10 +10,12 @@ export interface PaperSheetProps {
   /** Layout of the content inside the torn sheet. */
   readonly sheetClassName?: string | undefined;
   readonly children: ReactNode;
+  /** The outer, tilted layer (e.g. to watch hover or visibility). */
+  readonly ref?: Ref<HTMLDivElement> | undefined;
 }
 
-export const PaperSheet = ({ mirror = false, className, sheetClassName, children }: PaperSheetProps) => (
-  <div className={cx(styles.paper, mirror && styles.mirror, className)}>
+export const PaperSheet = ({ mirror = false, className, sheetClassName, children, ref }: PaperSheetProps) => (
+  <div ref={ref} className={cx(styles.paper, mirror && styles.mirror, className)}>
     <div className={cx(styles.sheet, sheetClassName)}>{children}</div>
   </div>
 );

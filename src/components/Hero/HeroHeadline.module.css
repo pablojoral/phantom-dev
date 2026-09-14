@@ -1,22 +1,37 @@
 /* The torn sheet itself is PaperSheet; this module only lays out the headline on it. */
 .headline { justify-self: start; }
+/* Every phrase sits in the same cell, so the sheet is sized by the largest one and never shifts. */
 .title {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .12em .3em;
+  display: grid;
   font-size: clamp(36px, 9vw, 64px);
   font-weight: 400;
   line-height: 1;
   text-transform: uppercase;
 }
+.phrase {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: .12em .3em;
+  visibility: hidden;
+}
+.active { visibility: visible; }
 .w { display: inline-flex; gap: .05em; white-space: nowrap; }
-.title :global(.rWrap) { animation: pop .3s calc(.3s + var(--i, 0) * 40ms) cubic-bezier(.2, .9, .3, 1.35) both; }
+
+/* In: letters pop in order. Out: they pop away in reverse, then the next phrase pops in. */
+.active :global(.rWrap) { animation: pop .3s calc(.3s + var(--i, 0) * 40ms) cubic-bezier(.2, .9, .3, 1.35) both; }
+.leaving :global(.rWrap) { animation: popOut .2s calc((var(--n, 1) - 1 - var(--i, 0)) * 25ms) cubic-bezier(.5, 0, .75, 0) both; }
 
 @keyframes pop {
   from { transform: scale(0); }
   to   { transform: scale(1); }
 }
+@keyframes popOut {
+  from { transform: scale(1); }
+  to   { transform: scale(0); }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .title :global(.rWrap) { animation: none; }
+  .active :global(.rWrap), .leaving :global(.rWrap) { animation: none; }
 }

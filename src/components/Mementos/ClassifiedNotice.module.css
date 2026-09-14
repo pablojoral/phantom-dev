@@ -1,0 +1,68 @@
+/* Centred over the card's panel, above it and the fan; never takes a press. */
+.notice {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  /* Content-sized column that may shrink on narrow cards, so the strip keeps one line when it fits. */
+  grid-template-columns: minmax(0, max-content);
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 16px;
+  pointer-events: none;
+}
+.leaving { animation: noticeOut .2s ease both; }
+
+/* The placeholder screens' stamp: a 6px outer rule and a thin inner one, red on translucent paper
+   so it reads on paper and on red cards alike. */
+.stamp {
+  padding: .3em .7em .25em;
+  border: 6px solid var(--red);
+  outline: 2px solid var(--red);
+  outline-offset: -13px;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  color: var(--red);
+  font-family: var(--display);
+  font-size: clamp(36px, 10vw, 60px);
+  line-height: 1;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  rotate: -8deg;
+  animation: slam .25s cubic-bezier(.2, .9, .3, 1.2) both;
+}
+.strip {
+  /* 100% of the notice column: one line when the card has room, a balanced wrap when it doesn't. */
+  max-width: 100%;
+  text-wrap: balance;
+  padding: 6px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: var(--fs-1);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: .08em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: skew(-12deg);
+  animation: fadeIn .2s ease .12s both;
+}
+.strip > span { display: inline-block; transform: skew(12deg); }
+
+@keyframes slam {
+  from { scale: 1.8; opacity: 0; }
+  to   { scale: 1; opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes noticeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp { animation: fadeIn .2s ease both; }
+  .strip { animation-delay: 0s; }
+}

@@ -8,10 +8,10 @@ export interface ScreenshotFanProps {
   readonly screenshots: ScreenshotTriple;
   /** Project name, used for the screenshot alt text. */
   readonly name: string;
-  /** No card below in one column: on touch the fan folds on its own card's timeline. */
-  readonly lastInOneColumn: boolean;
-  /** No card below in two columns. */
-  readonly lastInTwoColumns: boolean;
+  /** Touch only: the card was tapped once, so the fan is shown (mouse fans on hover instead). */
+  readonly open: boolean;
+  /** Touch only: folding back after `open`; keeps the phones promoted and shadowed until the fold ends. */
+  readonly closing: boolean;
 }
 
 const POSITION_CLASS: Readonly<Record<FanPosition, string | undefined>> = {
@@ -20,14 +20,11 @@ const POSITION_CLASS: Readonly<Record<FanPosition, string | undefined>> = {
   3: styles.shot3,
 };
 
-/** Three phones tucked behind a card: fanned by the card's hover on mouse, by scroll position on touch (CSS only). */
-export const ScreenshotFan = ({ screenshots, name, lastInOneColumn, lastInTwoColumns }: ScreenshotFanProps) => {
+/** Three phones tucked behind a card: fanned by the card's hover on mouse, by a first tap (`open`) on touch. */
+export const ScreenshotFan = ({ screenshots, name, open, closing }: ScreenshotFanProps) => {
   const shots = useScreenshotFan(screenshots, name);
   return (
-    <ul
-      className={cx(styles.fan, lastInOneColumn && styles.lastInOneColumn, lastInTwoColumns && styles.lastInTwoColumns)}
-      aria-hidden="true"
-    >
+    <ul className={cx(styles.fan, open && styles.open, closing && styles.closing)} aria-hidden="true">
       {shots.map((shot) => (
         <li key={shot.key} className={cx(styles.shot, POSITION_CLASS[shot.position])}>
           <img
