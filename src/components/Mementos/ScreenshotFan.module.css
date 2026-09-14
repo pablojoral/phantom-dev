@@ -30,7 +30,7 @@
 /* Fanned on real hover only (never on focus, so a tapped or just-closed card does not keep it open);
    keyed off the fan's direct parent (the card) so this module never names the card's class. */
 @media (hover: hover) and (pointer: fine) {
-  :hover > .fan .shot { opacity: 1; }
+  :hover > .fan .shot { opacity: 1; will-change: transform; }
   :hover > .fan .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-16deg) scale(1); }
   :hover > .fan .shot2 { transform: translate(-50%, -84%) rotate(0deg) scale(1); transition-delay: 60ms; }
   :hover > .fan .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(16deg) scale(1); transition-delay: 120ms; }
@@ -41,7 +41,12 @@
  * middle shot lower (-72%) and outer tilt ±9°, so the arc still peaks in the middle on narrow screens.
  */
 @media (hover: none), (pointer: coarse) {
-  .open .shot { opacity: 1; }
+  /* Each phone carries the lift shadow itself: a filter on the card would clip them on WebKit. */
+  .open .shot {
+    opacity: 1;
+    will-change: transform;
+    filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper));
+  }
   .open .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-9deg) scale(1); }
   .open .shot2 { transform: translate(-50%, -72%) rotate(0deg) scale(1); transition-delay: 60ms; }
   .open .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(9deg) scale(1); transition-delay: 120ms; }

@@ -83,11 +83,20 @@ export const skills: ReadonlyArray<Skill> = [
 ];
 
 /** "Case file" notices for projects under NDA; point `screenshots` at real captures otherwise (see README). */
-const CONFIDENTIAL_SCREENSHOTS: ScreenshotTriple = [
+export const CONFIDENTIAL_SCREENSHOTS: ScreenshotTriple = [
   { src: asset('/screenshots/confidential-1.svg'), width: 390, height: 844 },
   { src: asset('/screenshots/confidential-2.svg'), width: 390, height: 844 },
   { src: asset('/screenshots/confidential-3.svg'), width: 390, height: 844 },
 ];
+
+/** Placeholder projects: activating the card shows this notice instead of opening the gallery. */
+export const isConfidential = (project: Project): boolean => project.screenshots === CONFIDENTIAL_SCREENSHOTS;
+
+/** Copy for the notice a confidential card shows (the phrases on the placeholder screens). */
+export const confidentialNotice = {
+  stamp: 'Classified',
+  message: 'Screenshots withheld under NDA · Ask me for a live demo',
+} as const;
 
 /** Toggled iQ, the product name of the Lighting Control app. */
 const TOGGLED_IQ_SCREENSHOTS: ScreenshotTriple = [
