@@ -1,22 +1,117 @@
-.ranks { display: grid; }
-.rank {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 6px 18px;
+/*
+ * One centred cluster of ink chips in profile order. Emphasis is size only, plus one accent: large
+ * chips with the red offset shadow (signature), medium two-line chips (core), small chips (support).
+ * The <li> holds the static tilt / offset and the hover lift; the piece inside holds the scroll
+ * entrance, so the two never fight over `rotate` / `scale`.
+ */
+.collage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  padding: 16px 0;
-  border-bottom: 3px solid var(--ink);
+  gap: 14px 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
 }
-.rank:last-child { border-bottom: 0; }
-.arcana, .name { grid-column: 1 / -1; }
-.arcana { font-size: var(--fs-1); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--red-deep); }
-.name { font-family: var(--display); font-size: var(--fs-4); line-height: 1; text-transform: uppercase; }
-.meter { display: flex; gap: 4px; }
-.seg { width: 14px; height: 20px; border: 2px solid var(--ink); background: var(--paper); }
-.seg.on { background: var(--red); }
-.num { font-size: var(--fs-1); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 
-@media (min-width: 768px) {
-  .rank { grid-template-columns: 190px minmax(0, 1fr) auto auto; gap: 24px; }
-  .arcana, .name { grid-column: auto; }
+.piece {
+  min-width: 0;
+  max-width: 100%;
+  rotate: var(--tilt, 0deg);
+  translate: 0 var(--dy, 0px);
+  transition: rotate .2s ease, translate .2s ease, filter .2s ease;
+}
+/* The one extra accent on signature pieces. */
+.signature { filter: drop-shadow(8px 8px 0 var(--red)); }
+
+/* ---------- ink chips (the Mementos stack-chip language); signature and core are the same chip, larger ---------- */
+.chip {
+  display: inline-block;
+  max-width: 100%;
+  padding: 4px 12px;
+  background: var(--ink);
+  border: 2px solid var(--paper);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: var(--fs-2);
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  transform: skew(-8deg);
+}
+.chip > span { display: inline-block; transform: skew(8deg); }
+.chipLarge {
+  padding: .12em .45em;
+  border-width: 3px;
+  /* 40px floor: at 36px the shortest signature chip beats the largest core chip by only ~14% on phones. */
+  font-size: clamp(40px, 4.2vw, 56px);
+  line-height: 1.05;
+  letter-spacing: .03em;
+  /* Long names ("CI/CD & store releases") wrap inside the chip on narrow screens. */
+  white-space: normal;
+}
+.sep { color: var(--red); }
+.chipDetail { opacity: .85; }
+
+/* Core: medium chip, name on the first line, detail small on the second.
+   28px floor: below it the short core chips ("Node.js") lose area to the long support chip on phones. */
+.chipMedium {
+  padding: .2em .5em;
+  border-width: 2.5px;
+  font-size: clamp(28px, 2.8vw, 34px);
+  line-height: 1.05;
+  letter-spacing: .04em;
+  white-space: normal;
+}
+.coreName { display: block; }
+.coreDetail {
+  display: block;
+  margin-top: .3em;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: .08em;
+}
+
+@media (min-width: 640px) {
+  .collage { gap: 20px 24px; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .piece:hover { rotate: 0deg; translate: -4px -4px; filter: drop-shadow(5px 5px 0 var(--paper)); }
+  .signature:hover { filter: drop-shadow(12px 12px 0 var(--red)); }
+}
+
+/* Scroll-driven entrance on each item's own view timeline (the <li>'s layout box, not the transforms). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .piece { view-timeline: --skill block; }
+    .body {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --skill;
+    }
+    .signature .body {
+      animation-name: slam;
+      animation-range: entry 10% entry 70%;
+    }
+    .core .body, .support .body {
+      animation-name: pop;
+      animation-range: entry calc(20% + var(--i, 0) * 4%) entry calc(60% + var(--i, 0) * 4%);
+    }
+  }
+}
+
+@keyframes slam {
+  from { opacity: 0; scale: 1.25; }
+  to   { opacity: 1; scale: 1; }
+}
+@keyframes pop {
+  from { opacity: 0; scale: .6; }
+  to   { opacity: 1; scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .piece { transition: none; }
 }

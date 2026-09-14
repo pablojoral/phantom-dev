@@ -3,15 +3,17 @@
  * the components only render what they find below.
  */
 
-export type Rank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export type PanelTone = 'paper' | 'red';
 /** Three phone screenshots (390×844 or any 9:19.5), fanned out behind the project card. */
 export type ScreenshotTriple = readonly [string, string, string];
 
+/** Emphasis is visual only: signature skills are the big torn strips, core the red bars, support the small chips. */
+export type SkillTier = 'signature' | 'core' | 'support';
+
 export interface Skill {
-  readonly arcana: string;
   readonly name: string;
-  readonly rank: Rank;
+  readonly detail?: string;
+  readonly tier: SkillTier;
 }
 
 export interface Project {
@@ -51,14 +53,16 @@ export const lede =
   'Pablo — software engineer and React Native specialist. Seven years shipping mobile and full-stack products, from facility lighting control at Siemens to an interpretation app with thousands of active users. I steal the hearts of users with apps that feel native, ship fast, and never drop a frame.';
 
 export const skills: ReadonlyArray<Skill> = [
-  { arcana: 'I · The Magician', name: 'React Native', rank: 10 },
-  { arcana: 'VII · The Chariot', name: 'TypeScript & React', rank: 9 },
-  { arcana: '0 · The Fool', name: 'CI/CD & store releases', rank: 9 },
-  { arcana: 'IX · The Hermit', name: 'State & data (Zustand, TanStack Query)', rank: 8 },
-  { arcana: 'XIV · Temperance', name: 'Node.js (Express, NestJS)', rank: 8 },
-  { arcana: 'XVIII · The Moon', name: 'Native modules & deep linking', rank: 7 },
-  { arcana: 'XVI · The Tower', name: 'Python (Django, Flask)', rank: 7 },
-  { arcana: 'XVII · The Star', name: 'AI workflows & MCP', rank: 7 },
+  { name: 'React Native', tier: 'signature' },
+  { name: 'TypeScript & React', tier: 'signature' },
+  { name: 'CI/CD & store releases', tier: 'signature' },
+  { name: 'State & data', detail: 'Zustand · TanStack Query', tier: 'core' },
+  { name: 'Node.js', detail: 'Express · NestJS', tier: 'core' },
+  { name: 'Expo', tier: 'core' },
+  { name: 'OTA updates', tier: 'support' },
+  { name: 'Native modules & deep linking', tier: 'support' },
+  { name: 'Python', detail: 'Django · Flask', tier: 'support' },
+  { name: 'AI workflows & MCP', tier: 'support' },
 ];
 
 /** "Case file" notices for projects under NDA; point `screenshots` at real captures otherwise (see README). */
