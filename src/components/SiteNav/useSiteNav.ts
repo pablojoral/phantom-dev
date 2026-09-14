@@ -16,7 +16,6 @@ export const MENU_LINKS: ReadonlyArray<MenuLink> = [
 ];
 
 export interface SiteNavController extends MenuController {
-  readonly closeFromButton: () => void;
   readonly navigate: HashLinkHandler;
 }
 
@@ -24,8 +23,6 @@ export const useSiteNav = (): SiteNavController => {
   const menu = useMenu();
   const { close } = menu;
   const scrollToHash = useSmoothScroll();
-
-  const closeFromButton = useCallback(() => close(), [close]);
 
   // Close first so the section, not the burger, ends up with focus.
   const navigate = useCallback(
@@ -36,5 +33,5 @@ export const useSiteNav = (): SiteNavController => {
     [close, scrollToHash],
   );
 
-  return { ...menu, closeFromButton, navigate };
+  return { ...menu, navigate };
 };

@@ -13,7 +13,6 @@ export const SiteNav = () => {
         links={MENU_LINKS}
         firstLinkRef={nav.firstLinkRef}
         onNavigate={nav.navigate}
-        onClose={nav.closeFromButton}
       />
     </>
   );

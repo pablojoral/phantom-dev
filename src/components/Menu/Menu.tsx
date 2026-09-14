@@ -16,10 +16,9 @@ export interface MenuProps {
   readonly links: ReadonlyArray<MenuLink>;
   readonly firstLinkRef: RefObject<HTMLAnchorElement | null>;
   readonly onNavigate: HashLinkHandler;
-  readonly onClose: () => void;
 }
 
-export const Menu = ({ id, open, links, firstLinkRef, onNavigate, onClose }: MenuProps) => {
+export const Menu = ({ id, open, links, firstLinkRef, onNavigate }: MenuProps) => {
   const items = useMenuItems(links);
   return (
     <nav className={cx(styles.menu, open && styles.isOpen)} id={id} aria-label="Sections" hidden={!open}>
@@ -43,9 +42,6 @@ export const Menu = ({ id, open, links, firstLinkRef, onNavigate, onClose }: Men
           </li>
         ))}
       </ul>
-      <button className={styles.close} type="button" aria-label="Close menu" onClick={onClose}>
-        <span>X</span>
-      </button>
     </nav>
   );
 };

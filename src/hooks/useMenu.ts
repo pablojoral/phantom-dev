@@ -17,8 +17,26 @@ export interface MenuController {
 }
 
 /**
+ * Keeps Tab inside the open menu: the burger (its only close control) and the
+ * menu links form one loop, so focus never reaches the page behind the overlay.
+ */
+const cycleFocus = (event: KeyboardEvent, burger: HTMLButtonElement | null, firstLink: HTMLAnchorElement | null) => {
+  const links = firstLink?.closest('nav')?.querySelectorAll<HTMLAnchorElement>('a[href]');
+  if (burger === null || links === undefined) {
+    return;
+  }
+  const loop: ReadonlyArray<HTMLElement> = [burger, ...links];
+  const current = loop.indexOf(document.activeElement as HTMLElement);
+  const step = event.shiftKey ? -1 : 1;
+  const next = loop[current === -1 ? 0 : (current + step + loop.length) % loop.length];
+  event.preventDefault();
+  next?.focus();
+};
+
+/**
  * Pause-menu state: open/close, Escape to close, body scroll lock, and focus
- * management (into the first link on open, back to the burger on close).
+ * management (into the first link on open, Tab looped through burger + links,
+ * back to the burger on close).
  */
 export const useMenu = (): MenuController => {
   const [open, setOpen] = useState(false);
@@ -60,6 +78,8 @@ export const useMenu = (): MenuController => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         close();
+      } else if (event.key === 'Tab') {
+        cycleFocus(event, burgerRef.current, firstLinkRef.current);
       }
     };
     document.addEventListener('keydown', onKeyDown);
