@@ -64,19 +64,19 @@ jobs:
           name: dist
           path: dist
 
-      # linkedin.com answers bots with 999; mailto links are not checkable. The bare font hosts are
-      # preconnect targets (their roots 404), and the Pages site is this repo's own output, which a PR
-      # can't have deployed yet.
+      # linkedin.com answers bots with 999. The bare font hosts are preconnect targets (their roots
+      # 404), and the Pages site is this repo's own output, which a PR can't have deployed yet.
       - uses: lycheeverse/lychee-action@v2
         with:
+          # Mail links are skipped by default in lychee >= 0.2x (`--include-mail` opts in), and
+          # `--root-dir` (absolute path) replaces the deprecated `--base` for root-absolute links.
           args: >-
             --no-progress
-            --exclude-mail
             --exclude linkedin\.com
             --exclude localhost
             --exclude '^https://fonts\.(googleapis|gstatic)\.com/?$'
             --exclude 'pablojoral\.github\.io'
-            --base ./dist
+            --root-dir ${{ github.workspace }}/dist
             'dist/**/*.html'
             README.md
           fail: true
