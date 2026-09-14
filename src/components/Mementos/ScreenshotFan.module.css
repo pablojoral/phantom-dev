@@ -12,8 +12,12 @@
   position: absolute;
   top: 0;
   left: 50%;
-  /* Horizontal spread of the outer shots; the 16° tilt swings their tops ~0.64w further out. */
+  /* Fanned geometry, shared by the hover fan and the tap fan so they can't drift apart: horizontal
+     spread of the outer shots, lift of the middle and outer shots, and the outer tilt. */
   --spread: 40%;
+  --fan-mid-y: -72%;
+  --fan-outer-y: -62%;
+  --fan-angle: 9deg;
   width: clamp(96px, 30%, 150px);
   /* No fixed ratio: the height follows the image's own aspect-ratio (set inline from the data). */
   border: 3px solid var(--paper);
@@ -37,14 +41,14 @@
    keyed off the fan's direct parent (the card) so this module never names the card's class. */
 @media (hover: hover) and (pointer: fine) {
   :hover > .fan .shot { opacity: 1; will-change: transform; transition: transform .45s cubic-bezier(.2, .9, .3, 1.2), opacity .2s; }
-  :hover > .fan .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-16deg) scale(1); }
-  :hover > .fan .shot2 { transform: translate(-50%, -84%) rotate(0deg) scale(1); transition-delay: 60ms; }
-  :hover > .fan .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(16deg) scale(1); transition-delay: 120ms; }
+  :hover > .fan .shot1 { transform: translate(calc(-50% - var(--spread)), var(--fan-outer-y)) rotate(calc(-1 * var(--fan-angle))) scale(1); }
+  :hover > .fan .shot2 { transform: translate(-50%, var(--fan-mid-y)) rotate(0deg) scale(1); transition-delay: 60ms; }
+  :hover > .fan .shot3 { transform: translate(calc(-50% + var(--spread)), var(--fan-outer-y)) rotate(var(--fan-angle)) scale(1); transition-delay: 120ms; }
 }
 
 /*
- * Touch: a first tap on the card sets `.open` (useMementos) and the same fan opens, a little flatter:
- * middle shot lower (-72%) and outer tilt ±9°, so the arc still peaks in the middle on narrow screens.
+ * Touch: a first tap on the card sets `.open` (useMementos) and the same fan opens, with the same
+ * geometry as hover (middle -72%, outers -62% at ±9°), so the arc still peaks in the middle.
  */
 @media (hover: none), (pointer: coarse) {
   /* Each phone carries the lift shadow itself (a filter on the card would clip them on WebKit). The
@@ -54,9 +58,9 @@
     filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper));
   }
   .open .shot { opacity: 1; transition: transform .45s cubic-bezier(.2, .9, .3, 1.2), opacity .2s; }
-  .open .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-9deg) scale(1); }
-  .open .shot2 { transform: translate(-50%, -72%) rotate(0deg) scale(1); transition-delay: 60ms; }
-  .open .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(9deg) scale(1); transition-delay: 120ms; }
+  .open .shot1 { transform: translate(calc(-50% - var(--spread)), var(--fan-outer-y)) rotate(calc(-1 * var(--fan-angle))) scale(1); }
+  .open .shot2 { transform: translate(-50%, var(--fan-mid-y)) rotate(0deg) scale(1); transition-delay: 60ms; }
+  .open .shot3 { transform: translate(calc(-50% + var(--spread)), var(--fan-outer-y)) rotate(var(--fan-angle)) scale(1); transition-delay: 120ms; }
 }
 
 /* From 768px the wrap inset and card width leave room for the full fan. */
