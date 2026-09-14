@@ -26,8 +26,8 @@
  * needs a second tap for `click`) and the state sticks after the tap.
  */
 @media (hover: hover) and (pointer: fine) {
-  /* The lift belongs to the fan; confidential cards have none, so they keep their resting tilt. */
-  .card:not(.confidential):hover {
+  /* Every card lifts on hover, confidential ones included; only showcase cards also have a fan. */
+  .card:hover {
     z-index: 2;
     transform: rotate(0deg) translate(-4px, -4px);
     filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper));

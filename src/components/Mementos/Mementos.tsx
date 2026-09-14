@@ -20,7 +20,6 @@ export const Mementos = () => {
             key={project.target}
             className={cx(
               styles.card,
-              confidential && styles.confidential,
               fanOpen && styles.fanOpen,
               fanClosing && styles.fanClosing,
               hoverClosing && styles.hoverClosing,

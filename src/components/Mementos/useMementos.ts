@@ -118,16 +118,6 @@ export const useMementos = (): MementosController => {
     [openFrom, dismissNoticeFor],
   );
 
-  /** Only cards with a fan keep the hover-out raised state. */
-  const { onCardPointerLeave: onFanPointerLeave } = fan;
-  const onCardPointerLeave = useCallback(
-    (event: PointerEvent<HTMLElement>) => {
-      const project = PROJECT_BY_TARGET.get(event.currentTarget.dataset['target'] ?? '');
-      if (project !== undefined && !isConfidential(project)) onFanPointerLeave(event);
-    },
-    [onFanPointerLeave],
-  );
-
   const cards = useMemo(
     () =>
       projects.map((project): MementoCardView => {
@@ -138,7 +128,7 @@ export const useMementos = (): MementosController => {
           screenshots: isConfidential(project) ? null : project.screenshots,
           fanOpen: !confidential && openFan === project.target,
           fanClosing: !confidential && closingFan === project.target,
-          hoverClosing: !confidential && hoverClosing === project.target,
+          hoverClosing: hoverClosing === project.target,
           notice: notice?.target === project.target ? notice : null,
           hint: confidential ? HINT_CONFIDENTIAL : HINT_GALLERY,
         };
@@ -154,6 +144,6 @@ export const useMementos = (): MementosController => {
     onCardClick,
     onCardKeyDown,
     onCardPointerEnter: fan.onCardPointerEnter,
-    onCardPointerLeave: onCardPointerLeave,
+    onCardPointerLeave: fan.onCardPointerLeave,
   };
 };
