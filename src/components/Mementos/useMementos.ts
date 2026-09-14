@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import type { KeyboardEvent, MouseEvent } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react';
 import { isConfidential, projects } from '../../content/profile.ts';
 import type { Project } from '../../content/profile.ts';
 import { useClassifiedNotice } from './useClassifiedNotice.ts';
 import type { ClassifiedNotice } from './useClassifiedNotice.ts';
 import { TOUCH_QUERY, useFanDismiss } from './useFanDismiss.ts';
+import { useFanState } from './useFanState.ts';
 
 export interface OpenGallery {
   readonly project: Project;
@@ -18,6 +19,10 @@ export interface MementoCardView {
   readonly confidential: boolean;
   /** Touch only: this card's fan is shown (at most one card at a time). */
   readonly fanOpen: boolean;
+  /** Touch only: this card's fan is folding back; the card stays raised until it finishes. */
+  readonly fanClosing: boolean;
+  /** Mouse only: the pointer just left this card; it stays raised while the hover fan folds. */
+  readonly hoverClosing: boolean;
   /** The classified notice on this card, if it is showing one. */
   readonly notice: ClassifiedNotice | null;
   /** Visually hidden hint read with the card. */
@@ -32,6 +37,8 @@ export interface MementosController {
   readonly announcement: string;
   readonly onCardClick: (event: MouseEvent<HTMLElement>) => void;
   readonly onCardKeyDown: (event: KeyboardEvent<HTMLElement>) => void;
+  readonly onCardPointerEnter: (event: PointerEvent<HTMLElement>) => void;
+  readonly onCardPointerLeave: (event: PointerEvent<HTMLElement>) => void;
 }
 
 const PROJECT_BY_TARGET: ReadonlyMap<string, Project> = new Map(projects.map((project) => [project.target, project]));
@@ -50,19 +57,8 @@ const isInsideLink = (target: EventTarget | null): boolean =>
  */
 export const useMementos = (): MementosController => {
   const [gallery, setGallery] = useState<OpenGallery | null>(null);
-  const [openFan, setOpenFan] = useState<string | null>(null);
-  // Mirrors `openFan` for event handlers, so a dismissal and the next tap never read a stale value.
-  const openFanRef = useRef<string | null>(null);
-  const fanCardRef = useRef<HTMLElement | null>(null);
-
-  const setFan = useCallback((card: HTMLElement | null) => {
-    const target = card?.dataset['target'] ?? null;
-    openFanRef.current = target;
-    fanCardRef.current = card;
-    setOpenFan(target);
-  }, []);
-
-  const closeFan = useCallback(() => setFan(null), [setFan]);
+  const fan = useFanState();
+  const { openFan, closingFan, hoverClosing, openFanRef, fanCardRef, openCardFan, closeFan } = fan;
   useFanDismiss(openFan, fanCardRef, closeFan);
 
   const { notice, announcement, show: showNotice, hide: hideNotice } = useClassifiedNotice();
@@ -98,12 +94,12 @@ export const useMementos = (): MementosController => {
       const card = event.currentTarget;
       dismissNoticeFor(card);
       if (window.matchMedia(TOUCH_QUERY).matches && openFanRef.current !== card.dataset['target']) {
-        setFan(card);
+        openCardFan(card);
         return;
       }
       openFrom(card);
     },
-    [openFrom, setFan, dismissNoticeFor],
+    [openFrom, openCardFan, openFanRef, dismissNoticeFor],
   );
 
   const onCardKeyDown = useCallback(
@@ -125,12 +121,23 @@ export const useMementos = (): MementosController => {
           project,
           confidential,
           fanOpen: openFan === project.target,
+          fanClosing: closingFan === project.target,
+          hoverClosing: hoverClosing === project.target,
           notice: notice?.target === project.target ? notice : null,
           hint: confidential ? HINT_CONFIDENTIAL : HINT_GALLERY,
         };
       }),
-    [openFan, notice],
+    [openFan, closingFan, hoverClosing, notice],
   );
 
-  return { cards, gallery, closeGallery, announcement, onCardClick, onCardKeyDown };
+  return {
+    cards,
+    gallery,
+    closeGallery,
+    announcement,
+    onCardClick,
+    onCardKeyDown,
+    onCardPointerEnter: fan.onCardPointerEnter,
+    onCardPointerLeave: fan.onCardPointerLeave,
+  };
 };

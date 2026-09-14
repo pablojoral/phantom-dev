@@ -8,24 +8,27 @@ import { useMementos } from './useMementos.ts';
 import styles from './Mementos.module.css';
 
 export const Mementos = () => {
-  const { cards, gallery, closeGallery, announcement, onCardClick, onCardKeyDown } = useMementos();
+  const { cards, gallery, closeGallery, announcement, onCardClick, onCardKeyDown, onCardPointerEnter, onCardPointerLeave } =
+    useMementos();
   return (
     <section id="projects" aria-labelledby="projects-h">
       <SectionHead id="projects" title="Pr[o]je[c]t[s]" sub="targets taken, hearts changed." />
 
       <div className={styles.cards}>
-        {cards.map(({ project, confidential, fanOpen, notice, hint }) => (
+        {cards.map(({ project, confidential, fanOpen, fanClosing, hoverClosing, notice, hint }) => (
           <article
             key={project.target}
-            className={cx(styles.card, fanOpen && styles.fanOpen)}
+            className={cx(styles.card, fanOpen && styles.fanOpen, fanClosing && styles.fanClosing, hoverClosing && styles.hoverClosing)}
             role="button"
             tabIndex={0}
             aria-haspopup={confidential ? undefined : 'dialog'}
             data-target={project.target}
             onClick={onCardClick}
             onKeyDown={onCardKeyDown}
+            onPointerEnter={onCardPointerEnter}
+            onPointerLeave={onCardPointerLeave}
           >
-            <ScreenshotFan screenshots={project.screenshots} name={project.name} open={fanOpen} />
+            <ScreenshotFan screenshots={project.screenshots} name={project.name} open={fanOpen} closing={fanClosing} />
             <span className="vh">{hint}</span>
             {/* Keyed by the notice, so every activation remounts the wrapper and the shake restarts. */}
             <div key={`body-${notice?.key ?? 0}`} className={cx(styles.body, notice !== null && styles.shake)}>

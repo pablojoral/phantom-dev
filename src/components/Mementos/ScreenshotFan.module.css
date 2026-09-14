@@ -23,14 +23,20 @@
   transform-origin: 50% 110%;
   transform: translate(-50%, 20%) rotate(0deg) scale(.92);
   opacity: 0;
-  transition: transform .45s cubic-bezier(.2, .9, .3, 1.2), opacity .2s;
+  /* Closing (the destination is this rest state): an ease-in fold with no overshoot; the phones stay
+     visible and fade only as they tuck in, 3 → 2 → 1. The open states below set their own transition.
+     Total ≈ 500ms; FAN_CLOSE_MS in useFanState.ts must cover it. */
+  transition: transform .38s cubic-bezier(.5, 0, .75, 0), opacity .16s linear .24s;
 }
+.shot3 { transition-delay: 0s, .24s; }
+.shot2 { transition-delay: 60ms, .3s; }
+.shot1 { transition-delay: 120ms, .36s; }
 .shot img { display: block; width: 100%; height: auto; }
 
 /* Fanned on real hover only (never on focus, so a tapped or just-closed card does not keep it open);
    keyed off the fan's direct parent (the card) so this module never names the card's class. */
 @media (hover: hover) and (pointer: fine) {
-  :hover > .fan .shot { opacity: 1; will-change: transform; }
+  :hover > .fan .shot { opacity: 1; will-change: transform; transition: transform .45s cubic-bezier(.2, .9, .3, 1.2), opacity .2s; }
   :hover > .fan .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-16deg) scale(1); }
   :hover > .fan .shot2 { transform: translate(-50%, -84%) rotate(0deg) scale(1); transition-delay: 60ms; }
   :hover > .fan .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(16deg) scale(1); transition-delay: 120ms; }
@@ -41,12 +47,13 @@
  * middle shot lower (-72%) and outer tilt ±9°, so the arc still peaks in the middle on narrow screens.
  */
 @media (hover: none), (pointer: coarse) {
-  /* Each phone carries the lift shadow itself: a filter on the card would clip them on WebKit. */
-  .open .shot {
-    opacity: 1;
+  /* Each phone carries the lift shadow itself (a filter on the card would clip them on WebKit). The
+     shadow and promotion stay constant while `.closing`, so only transform and opacity change mid-fold. */
+  .open .shot, .closing .shot {
     will-change: transform;
     filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper));
   }
+  .open .shot { opacity: 1; transition: transform .45s cubic-bezier(.2, .9, .3, 1.2), opacity .2s; }
   .open .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-9deg) scale(1); }
   .open .shot2 { transform: translate(-50%, -72%) rotate(0deg) scale(1); transition-delay: 60ms; }
   .open .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(9deg) scale(1); transition-delay: 120ms; }
@@ -61,8 +68,8 @@
   .shot { transition: opacity .2s; }
 }
 @media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
-  :hover > .fan .shot { transition-delay: 0s; }
+  :hover > .fan .shot { transition: opacity .2s; }
 }
 @media (prefers-reduced-motion: reduce) and ((hover: none) or (pointer: coarse)) {
-  .open .shot { transition-delay: 0s; }
+  .open .shot { transition: opacity .2s; }
 }

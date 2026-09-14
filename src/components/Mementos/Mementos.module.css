@@ -2,8 +2,9 @@
 /*
  * touch-action: manipulation drops the double-tap-zoom wait, so one tap fires `click` straight away.
  * Every card is its own stacking context at rest (`isolation`, integer z-index), so the fan (z 0) and
- * panel (z 1) always stack inside their own card and never join a neighbour's. The z-index change is
- * held for .45s on close, so the lifted card stays on top while its phones fold back.
+ * panel (z 1) always stack inside their own card and never join a neighbour's. A closing card keeps
+ * its raised state through explicit classes (`fanClosing`, `hoverClosing`, set by useFanState for
+ * FAN_CLOSE_MS), not a delayed z-index transition.
  */
 .card {
   position: relative;
@@ -12,7 +13,7 @@
   display: grid;
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform .2s ease, filter .2s ease, z-index 0s linear .45s;
+  transition: transform .2s ease, filter .2s ease;
 }
 /* Inner wrapper: stretches the panel to the row like before and carries the shake, so the shake's
    translate/rotate never fight the card's tilt and lift transform. */
@@ -30,8 +31,8 @@
     transform: rotate(0deg) translate(-4px, -4px);
     filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper));
     will-change: transform;
-    transition: transform .2s ease, filter .2s ease, z-index 0s;
   }
+  .card.hoverClosing { z-index: 2; will-change: transform; }
 }
 .card:focus-visible { outline: 3px solid var(--paper); outline-offset: 6px; }
 .card h3 { font-family: var(--display); font-size: var(--fs-5); line-height: .95; text-transform: uppercase; }
@@ -67,16 +68,17 @@
  * Touch: the first tap opens the card's fan (`.fanOpen`, set by useMementos) with the hover lift. The
  * drop-shadow sits on the panel wrapper (and on each phone, in ScreenshotFan.module.css), not on the
  * card: WebKit clips a filtered element's overflowing children once the transition ends and the layer
- * is demoted, which tucked the raised phones under the card. `will-change` keeps the open card promoted.
+ * is demoted, which tucked the raised phones under the card. While the fan folds back (`.fanClosing`)
+ * every promoted property stays exactly as when open (z-index, lift, will-change, shadows), so nothing
+ * discrete changes mid-fold; only the phones move and fade.
  */
 @media (hover: none), (pointer: coarse) {
-  .card.fanOpen {
+  .card.fanOpen, .card.fanClosing {
     z-index: 2;
     transform: rotate(0deg) translate(-4px, -4px);
     will-change: transform;
-    transition: transform .2s ease, z-index 0s;
   }
-  .fanOpen > .body { filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper)); }
+  .fanOpen > .body, .fanClosing > .body { filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper)); }
 }
 
 /* Confidential card activated: six steps of ±7px and ±1.2°, dying out. */
