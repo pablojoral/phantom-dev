@@ -13,13 +13,9 @@ export const App = () => (
       <div className={styles.dots} aria-hidden="true" />
       <Hero />
       <main className="wrap">
-        <div className="stripe" aria-hidden="true" />
         <Confidants />
-        <div className="stripe" aria-hidden="true" />
         <Mementos />
-        <div className="stripe" aria-hidden="true" />
         <VelvetRoom />
-        <div className="stripe" aria-hidden="true" />
       </main>
       <Contact />
     </div>

@@ -13,7 +13,7 @@
 
 ## Styling rules
 - Every color comes from a `:root` token in `global.css` (`--red`, `--ink`, `--paper`, ...). Never hardcode a hex in a module. Single dark theme by design; no light mode.
-- Shared devices stay global and are referenced by string: `.label`, `.panel*`, `.tab`, `.stripe`, `.sec-head`, `.wrap`, `.vh`. Do not duplicate them into modules.
+- Shared devices stay global and are referenced by string: `.label`, `.panel*`, `.tab`, `.sec-head`, `.wrap`, `.vh`. Do not duplicate them into modules.
 - `.rWrap` / `.r` are not shared devices: they are unstyled hook classes owned by `RansomText` (its module holds the look). Other modules may target them via `:global(...)` for animation only, never restyle them.
 - Component-specific rules live in the component's CSS Module (camelCase keys). When a module rule must target a shared class, use `:global(.panel--red) .chips li` — keep the same selector shape as before so specificity is unchanged.
 - Keyframes live in the module that uses them.

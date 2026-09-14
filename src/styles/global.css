@@ -60,8 +60,14 @@ body.menu-open, body.gallery-open { overflow: hidden; }
   padding: 0 clamp(16px, 4vw, 40px);
 }
 
-/* No bottom padding: the closing scene's shard ground starts right under the last stripe. */
-main { display: grid; gap: 72px; }
+/*
+ * One section rhythm: the same space between sections, above the first (after the hero's angled
+ * bottom edge) and below the last (before the contact scene's torn top edge). The outer space sits
+ * on the first/last child because `main` also carries `.wrap`, whose padding/margin shorthands win.
+ */
+main { --section-space: 64px; display: grid; gap: var(--section-space); }
+main > :first-child { margin-top: var(--section-space); }
+main > :last-child { margin-bottom: var(--section-space); }
 section { scroll-margin-top: 16px; }
 
 /* ---------- shared devices ---------- */
@@ -112,11 +118,6 @@ section { scroll-margin-top: 16px; }
 .tab > span { display: inline-block; transform: skew(12deg); }
 .tab--ink { background: var(--ink); border: 2px solid var(--paper); }
 
-.stripe {
-  height: 16px;
-  background: repeating-linear-gradient(-45deg, var(--red) 0 12px, var(--ink) 12px 24px);
-}
-
 a.tab:hover { box-shadow: 4px 4px 0 var(--paper); }
 .panel--red a.tab:hover { box-shadow: 4px 4px 0 var(--ink); }
 
@@ -146,6 +147,10 @@ a.tab:hover { box-shadow: 4px 4px 0 var(--paper); }
 }
 
 /* ---------- breakpoints ---------- */
+@media (min-width: 640px) {
+  main { --section-space: 96px; }
+}
+
 @media (min-width: 768px) {
   body { font-size: 20px; }
   .sec-head .tab { font-size: var(--fs-5); padding: 14px 34px; }
