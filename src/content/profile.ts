@@ -60,8 +60,8 @@ export const photo = { src: asset('/profile.jpg'), alt: name } as const;
 /** Optional papercut word pinned to the framed mugshot's corner (e.g. 'Hello'); an empty string shows no label. */
 export const mugshotLabel = '';
 export const tagline = 'Software Engineer · Mobile Engineering';
-/** Papercut headline on the hero's torn sheet (the page's <h1>). */
-export const heroHeadline = 'Ship your app';
+/** Papercut headlines on the hero sheet; they rotate in order. The first is the page's <h1> accessible name. */
+export const heroHeadlines = ['Ship your app', 'Build it native', 'Push to prod', 'Launch faster', 'Never drop a frame'] as const;
 /** Papercut headline on the contact scene's torn sheet, with the small label above it. */
 export const contactHeadline = "Let's ship it";
 export const contactKicker = 'Your next release starts here';
