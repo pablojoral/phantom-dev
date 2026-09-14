@@ -37,54 +37,14 @@
 }
 
 /*
- * Touch: the same fan, scrubbed by scroll, handed from card to card. Every range below is the same
- * band on a card's own timeline, `cover 0%` → `cover 250px` (card top from the screen bottom to
- * 250px above it), and that shared band is what keeps the handoff exact in both scroll directions:
- *   fanIn  — own card's timeline (`--tl-self`), fill both: rest before the band, fanned after it.
- *   fanOut — the card below's timeline (`--tl-next`), fill forwards only: no effect until the card
- *            below reaches the band, then it folds this fan while the one below spreads. Listed
- *            second, so where both apply it wins (composition: replace).
- * A card with no card below (`.lastInOneColumn` / `.lastInTwoColumns`) instead folds on its own
- * timeline via fanLast, over `cover 78vh` → `cover 97.5vh`: for a card shorter than the screen that
- * is the old 78/81.5/85% → 91.5/94.5/97.5% of `cover 0%`–`contain 100%` (keyframe stops remapped),
- * i.e. T ≈ 180 → 20 on an 812px screen. A taller card folds off-screen; acceptable.
- * `transform` is safe to keyframe: nothing else transforms `.shot`. Timeline names are set on the
- * card in Mementos.module.css. No scroll-timeline / timeline-scope support, or reduced motion: hidden.
+ * Touch: a first tap on the card sets `.open` (useMementos) and the same fan opens, a little flatter:
+ * middle shot lower (-72%) and outer tilt ±9°, so the arc still peaks in the middle on narrow screens.
  */
 @media (hover: none), (pointer: coarse) {
-  @supports (animation-timeline: view()) and (timeline-scope: --x) {
-    @media (prefers-reduced-motion: no-preference) {
-      .shot {
-        animation-timing-function: linear;
-        animation-composition: replace;
-        animation-fill-mode: both, forwards;
-        animation-timeline: var(--tl-self), var(--tl-next);
-        animation-range: cover 0% cover 250px, cover 0% cover 250px;
-      }
-      .shot1 { animation-name: fanIn1, fanOut1; }
-      .shot2 { animation-name: fanIn2, fanOut2; }
-      .shot3 { animation-name: fanIn3, fanOut3; }
-
-      @media (max-width: 639px) {
-        .lastInOneColumn .shot {
-          animation-timeline: var(--tl-self), var(--tl-self);
-          animation-range: cover 0% cover 250px, cover 78vh cover 97.5vh;
-        }
-        .lastInOneColumn .shot1 { animation-name: fanIn1, fanLast1; }
-        .lastInOneColumn .shot2 { animation-name: fanIn2, fanLast2; }
-        .lastInOneColumn .shot3 { animation-name: fanIn3, fanLast3; }
-      }
-      @media (min-width: 640px) {
-        .lastInTwoColumns .shot {
-          animation-timeline: var(--tl-self), var(--tl-self);
-          animation-range: cover 0% cover 250px, cover 78vh cover 97.5vh;
-        }
-        .lastInTwoColumns .shot1 { animation-name: fanIn1, fanLast1; }
-        .lastInTwoColumns .shot2 { animation-name: fanIn2, fanLast2; }
-        .lastInTwoColumns .shot3 { animation-name: fanIn3, fanLast3; }
-      }
-    }
-  }
+  .open .shot { opacity: 1; }
+  .open .shot1 { transform: translate(calc(-50% - var(--spread)), -62%) rotate(-9deg) scale(1); }
+  .open .shot2 { transform: translate(-50%, -72%) rotate(0deg) scale(1); transition-delay: 60ms; }
+  .open .shot3 { transform: translate(calc(-50% + var(--spread)), -62%) rotate(9deg) scale(1); transition-delay: 120ms; }
 }
 
 /* From 768px the wrap inset and card width leave room for the full fan. */
@@ -98,43 +58,6 @@
 @media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
   :hover > .fan .shot { transition-delay: 0s; }
 }
-
-/* Spread: all start at the band's start; fully out at 60/80/100% (shot 1→3). */
-@keyframes fanIn1 {
-  0% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-  60%, 100% { opacity: 1; transform: translate(calc(-50% - var(--spread)), -62%) rotate(-16deg) scale(1); }
-}
-@keyframes fanIn2 {
-  0% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-  80%, 100% { opacity: 1; transform: translate(-50%, -84%) rotate(0deg) scale(1); }
-}
-@keyframes fanIn3 {
-  0% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-  100% { opacity: 1; transform: translate(calc(-50% + var(--spread)), -62%) rotate(16deg) scale(1); }
-}
-/* Handoff fold, reverse stagger: shot3 0→60%, shot2 20→80%, shot1 40→100%. */
-@keyframes fanOut1 {
-  0%, 40% { opacity: 1; transform: translate(calc(-50% - var(--spread)), -62%) rotate(-16deg) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-}
-@keyframes fanOut2 {
-  0%, 20% { opacity: 1; transform: translate(-50%, -84%) rotate(0deg) scale(1); }
-  80%, 100% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-}
-@keyframes fanOut3 {
-  0% { opacity: 1; transform: translate(calc(-50% + var(--spread)), -62%) rotate(16deg) scale(1); }
-  60%, 100% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-}
-/* Last card's own fold over 78→97.5vh: shot3 78→91.5, shot2 81.5→94.5, shot1 85→97.5 (absolute). */
-@keyframes fanLast1 {
-  0%, 35.9% { opacity: 1; transform: translate(calc(-50% - var(--spread)), -62%) rotate(-16deg) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-}
-@keyframes fanLast2 {
-  0%, 17.95% { opacity: 1; transform: translate(-50%, -84%) rotate(0deg) scale(1); }
-  84.62%, 100% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
-}
-@keyframes fanLast3 {
-  0% { opacity: 1; transform: translate(calc(-50% + var(--spread)), -62%) rotate(16deg) scale(1); }
-  69.23%, 100% { opacity: 0; transform: translate(-50%, 20%) rotate(0deg) scale(.92); }
+@media (prefers-reduced-motion: reduce) and ((hover: none) or (pointer: coarse)) {
+  .open .shot { transition-delay: 0s; }
 }

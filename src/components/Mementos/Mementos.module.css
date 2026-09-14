@@ -45,24 +45,12 @@
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/*
- * Touch: the fan scrubs with scroll instead (keyframes live in ScreenshotFan.module.css). Each card
- * declares its own named view timeline (`--memento-<i>`, set inline), tracking its layout box rather
- * than the shots' transforms; `timeline-scope` hoists every name to the list so a card's shots can
- * also follow the card below. `--tl-next` is that card: index + 1 in one column, index + 2 in two
- * (in two columns the DOM-next card sits beside, on the same scroll band). No z-index needed: each
- * card's rotate() makes it a stacking context painted in DOM order, so a later card's phones paint
- * over the card above it.
- */
+/* Touch: the first tap opens the card's fan (`.fanOpen`, set by useMementos) with the hover lift. */
 @media (hover: none), (pointer: coarse) {
-  @supports (animation-timeline: view()) and (timeline-scope: --x) {
-    @media (prefers-reduced-motion: no-preference) {
-      .cards { timeline-scope: var(--tl-scope); }
-      .card { view-timeline: var(--tl-self) block; --tl-next: var(--tl-next-1); }
-      @media (min-width: 640px) {
-        .card { --tl-next: var(--tl-next-2); }
-      }
-    }
+  .card.fanOpen {
+    z-index: 2;
+    transform: rotate(0deg) translate(-4px, -4px);
+    filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper));
   }
 }
 
