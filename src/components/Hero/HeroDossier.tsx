@@ -16,7 +16,7 @@ export const HeroDossier = ({ className }: HeroDossierProps) => {
       <Dossier>
         <dl className={styles.fields}>
           {fields.map((field) => (
-            <DossierField key={field.key} label={field.label} value={field.value} tab={field.tab} />
+            <DossierField key={field.key} label={field.label} value={field.value} />
           ))}
         </dl>
         <p className={styles.lede}>{lede}</p>

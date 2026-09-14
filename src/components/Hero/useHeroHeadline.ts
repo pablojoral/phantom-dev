@@ -1,9 +1,6 @@
 import { useMemo } from 'react';
-
-interface HeadlineWord {
-  readonly text: string;
-  readonly hot: boolean;
-}
+import { heroHeadline } from '../../content/profile.ts';
+import { ransomLetterCount, toRansom } from '../RansomText/toRansom.ts';
 
 export interface RansomWord {
   readonly key: string;
@@ -13,25 +10,23 @@ export interface RansomWord {
   readonly startIndex: number;
 }
 
-export const HEADLINE_LABEL = 'Take your app';
+export interface HeroHeadlineView {
+  /** Accessible name, e.g. "Ship your app". */
+  readonly label: string;
+  readonly words: ReadonlyArray<RansomWord>;
+}
 
-const HEADLINE_WORDS: ReadonlyArray<HeadlineWord> = [
-  { text: 'TAKE', hot: false },
-  { text: 'YOUR', hot: false },
-  { text: 'APP', hot: false },
-];
-
-const toRansomWords = (words: ReadonlyArray<HeadlineWord>): ReadonlyArray<RansomWord> => {
+const toRansomWords = (phrase: string): ReadonlyArray<RansomWord> => {
   let next = 0;
-  return words.map((word) => {
-    const startIndex = next;
-    next += word.text.length;
-    return {
-      key: word.text,
-      text: word.hot ? `{${word.text}}` : `[${word.text}]`,
-      startIndex,
-    };
-  });
+  return phrase
+    .split(' ')
+    .filter((word) => word.length > 0)
+    .map((word, index) => {
+      const startIndex = next;
+      next += ransomLetterCount(word);
+      return { key: `${index}-${word}`, text: toRansom(word), startIndex };
+    });
 };
 
-export const useHeroHeadline = (): ReadonlyArray<RansomWord> => useMemo(() => toRansomWords(HEADLINE_WORDS), []);
+export const useHeroHeadline = (): HeroHeadlineView =>
+  useMemo(() => ({ label: heroHeadline, words: toRansomWords(heroHeadline) }), []);

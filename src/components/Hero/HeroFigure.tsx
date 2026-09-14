@@ -34,9 +34,6 @@ export const HeroFigure = ({ frameClassName, className }: HeroFigureProps) => {
             </span>
           )}
         </div>
-        <span className={styles.stamp} aria-hidden="true">
-          No. 001
-        </span>
       </div>
     </>
   );

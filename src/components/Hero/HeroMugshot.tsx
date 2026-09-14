@@ -30,9 +30,11 @@ export const HeroMugshot = ({ className }: HeroMugshotProps) => {
           <span className={styles.tint} />
         </div>
       </div>
-      <span className={styles.label}>
-        <RansomText text={label} style="mix" />
-      </span>
+      {label !== '' && (
+        <span className={styles.label}>
+          <RansomText text={label} style="mix" />
+        </span>
+      )}
     </div>
   );
 };

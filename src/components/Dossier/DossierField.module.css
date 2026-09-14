@@ -60,7 +60,7 @@
   .tab { --overhang: 16px; padding: 3px 10px; font-size: var(--fs-1); }
 }
 
-/* The in-flow tab narrows the bar; below 1024px the larger size wraps "Mobile Engineering". */
+/* Below 1024px the larger size wraps "Mobile Engineering" at 375px, and the Contact COPY tab narrows its bar. */
 @media (min-width: 1024px) {
   .bar { font-size: var(--fs-4); }
 }

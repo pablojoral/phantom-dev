@@ -1,11 +1,11 @@
 /*
- * One angular shard for both layers. On desktop the dossier spans ≈20–80% of the figure's height;
- * through that band the left edge stays at 26–34% of the figure's width, so the photo bites at most
- * ~30px into the dossier (border + padding is 37px) and never covers text. Below it the edge
- * swings out to 4%, over empty ground.
+ * One angular shard for both layers (the paper outline is the same shape, offset). On desktop the
+ * dossier's text ends at ≈68% of the figure's height; down to there the left edge stays at 26–34% of
+ * the figure's width, so the photo never covers text. From 70% the edge swings out to 16%, over the
+ * dossier's empty bottom padding. No vertex is sharper than ~60°, so the foot never reads as a needle.
  */
 .frame, .figure {
-  --shard: polygon(34% 0, 100% 5%, 100% 94%, 66% 100%, 4% 96%, 29% 82%, 26% 38%);
+  --shard: polygon(34% 0, 100% 5%, 100% 94%, 66% 100%, 16% 95%, 30% 70%, 26% 38%);
 }
 
 .frame { background: var(--paper); clip-path: var(--shard); translate: -12px 12px; scale: 1.02; }
@@ -49,20 +49,6 @@
   transform: skew(-12deg);
 }
 .missing > span { display: inline-block; transform: skew(12deg); }
-
-.stamp {
-  position: absolute;
-  top: 10%;
-  left: 42%;
-  padding: 2px 8px;
-  background: var(--paper);
-  color: var(--red);
-  font-size: var(--fs-1);
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  transform: skew(-12deg) rotate(4deg);
-}
 
 @media (min-width: 640px) {
   .frame { translate: -18px 14px; }

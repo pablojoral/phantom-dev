@@ -13,7 +13,7 @@ import styles from './Contact.module.css';
 /** The page's closing scene: the hero's language mirrored, with the page footer on the same glass. */
 export const Contact = () => {
   const { email, mailto, profiles, emailRef, label, announcement, copy } = useContact();
-  const { titleLabel, titleLines, heartLabel, heartWords } = useContactWords();
+  const { titleLabel, titleLines, kicker, headlineLabel, headlineWords } = useContactWords();
   return (
     <div className={styles.ending}>
       <Shards mirror edge="top" className={styles.shards} />
@@ -57,10 +57,10 @@ export const Contact = () => {
 
           <PaperSheet mirror className={styles.sheet} sheetClassName={styles.sheetInner}>
             <p className={cx('label', styles.kicker)}>
-              <span>Your heart will be taken</span>
+              <span>{kicker}</span>
             </p>
-            <p className={styles.heart} aria-label={heartLabel}>
-              {heartWords.map((word) => (
+            <p className={styles.sheetHeadline} aria-label={headlineLabel}>
+              {headlineWords.map((word) => (
                 <span key={word.key} className={styles.w} aria-hidden="true">
                   <RansomText text={word.text} startIndex={word.startIndex} style="mix" />
                 </span>
@@ -75,9 +75,6 @@ export const Contact = () => {
         <footer className={styles.footer}>
           <p className={styles.chip}>
             <span>© 2026 {name} · Built with React, Vite, and a lot of red.</span>
-          </p>
-          <p className={cx(styles.chip, styles.chipSmall)}>
-            <span>Persona 5 is © ATLUS. This is a fan-styled personal page.</span>
           </p>
         </footer>
       </div>

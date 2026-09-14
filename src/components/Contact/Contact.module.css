@@ -56,7 +56,7 @@
 .sheet { grid-area: sheet; justify-self: start; margin-top: calc(16px - var(--overlap)); z-index: 4; }
 .sheetInner { display: grid; gap: 14px; justify-items: start; }
 .kicker { color: var(--red-deep); }
-.heart {
+.sheetHeadline {
   display: flex;
   flex-wrap: wrap;
   gap: .12em .3em;
@@ -96,7 +96,6 @@
   transform: skew(-12deg);
 }
 .chip > span { display: inline-block; transform: skew(12deg); }
-.chipSmall { font-size: var(--fs-1); letter-spacing: .04em; }
 
 /* ---------- tablet (640–1023px) ---------- */
 @media (min-width: 640px) {
@@ -127,7 +126,7 @@
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .sheet { view-timeline: --contact-sheet block; }
-    .heart :global(.rWrap) {
+    .sheetHeadline :global(.rWrap) {
       animation-name: pop;
       animation-timing-function: cubic-bezier(.2, .9, .3, 1.35);
       animation-fill-mode: both;

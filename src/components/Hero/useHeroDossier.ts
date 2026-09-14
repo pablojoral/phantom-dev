@@ -1,13 +1,10 @@
 import { useMemo } from 'react';
 import { lede, tagline } from '../../content/profile.ts';
-import type { DossierTab } from '../Dossier/DossierField.tsx';
 
 export interface DossierField {
   readonly key: string;
   readonly label: string;
   readonly value: string;
-  /** Small tab hanging off the bar's left edge, if any. */
-  readonly tab: DossierTab | undefined;
 }
 
 export interface HeroDossierState {
@@ -16,14 +13,13 @@ export interface HeroDossierState {
 }
 
 const TAGLINE_SEPARATOR = '·';
-const TAB_TEXT = 'Calling card';
 
-/** The tagline "Phantom Dev · Mobile Engineering" becomes the codename and specialty fields. */
+/** The tagline "Software Engineer · Mobile Engineering" becomes the role and specialty fields. */
 const toFields = (text: string): ReadonlyArray<DossierField> => {
-  const [codename = '', specialty = ''] = text.split(TAGLINE_SEPARATOR).map((part) => part.trim());
+  const [role = '', specialty = ''] = text.split(TAGLINE_SEPARATOR).map((part) => part.trim());
   const fields: ReadonlyArray<DossierField> = [
-    { key: 'codename', label: 'codename', value: codename, tab: undefined },
-    { key: 'specialty', label: 'specialty', value: specialty, tab: { kind: 'label', text: TAB_TEXT } },
+    { key: 'role', label: 'role', value: role },
+    { key: 'specialty', label: 'specialty', value: specialty },
   ];
   return fields.filter((field) => field.value.length > 0);
 };

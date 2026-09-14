@@ -1,4 +1,4 @@
-# Phantom Dev — project conventions
+# Pablo Joral portfolio — project conventions
 
 ## Stack
 - Vite 8 + React 19 + TypeScript 6 (strict, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`).

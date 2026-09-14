@@ -5,7 +5,8 @@
   max-width: 100%;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: .12em;
+  /* .08em (not .12em) keeps "Software Engineer · Mobile Engineering" on one line beside the burger. */
+  letter-spacing: .08em;
   white-space: nowrap;
   text-transform: uppercase;
   padding: 3px 12px;
@@ -30,8 +31,8 @@
 .w + .w { margin-top: .06em; margin-left: 1.1em; }
 
 /*
- * The one-line chip needs ~225px; beside the burger reserve (100vw - 16px - 92px) that fits from
- * ~333px. Below 360px it drops under the burger's corner (16px + 52px) and may run full width.
+ * The one-line chip needs ~250px; beside the burger reserve (100vw - 16px - 92px) that fits from
+ * ~358px. Below 360px it drops under the burger's corner (16px + 52px) and may run full width.
  */
 @media (max-width: 359px) {
   .tag { margin-top: 60px; }
