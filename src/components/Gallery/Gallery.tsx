@@ -46,7 +46,14 @@ export const Gallery = ({ project, opener, onClose }: GalleryProps) => {
         {shots.map((shot) => (
           <li key={shot.key} className={cx(styles.phone, POSITION_CLASS[shot.position])} style={staggerStyle(shot.position - 1)}>
             <div className={styles.frame}>
-              <img src={shot.src} alt={shot.alt} width={390} height={844} decoding="async" />
+              <img
+                src={shot.src}
+                alt={shot.alt}
+                width={shot.width}
+                height={shot.height}
+                style={{ aspectRatio: shot.ratio }}
+                decoding="async"
+              />
             </div>
             <span className={styles.caption}>
               <span>0{shot.position}</span>

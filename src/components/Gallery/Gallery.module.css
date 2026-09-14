@@ -47,7 +47,7 @@
   padding: .12em .5em;
   transform: skew(-12deg);
 }
-.row { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; }
+.row { position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 28px; }
 .phone {
   display: grid;
   gap: 12px;
@@ -60,13 +60,13 @@
 .phone3 { --rot: 16deg; }
 .frame {
   width: clamp(160px, 26vw, 300px);
-  aspect-ratio: 390 / 844;
+  /* No fixed ratio: the height follows the image's own aspect-ratio (set inline from the data). */
   border: 4px solid var(--paper);
   border-radius: 18px;
   background: var(--ink);
   overflow: hidden;
 }
-.frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.frame img { display: block; width: 100%; height: auto; }
 .close {
   position: fixed;
   top: 16px;

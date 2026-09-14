@@ -30,7 +30,15 @@ export const ScreenshotFan = ({ screenshots, name, lastInOneColumn, lastInTwoCol
     >
       {shots.map((shot) => (
         <li key={shot.key} className={cx(styles.shot, POSITION_CLASS[shot.position])}>
-          <img src={shot.src} alt={shot.alt} width={390} height={844} loading="lazy" decoding="async" />
+          <img
+            src={shot.src}
+            alt={shot.alt}
+            width={shot.width}
+            height={shot.height}
+            style={{ aspectRatio: shot.ratio }}
+            loading="lazy"
+            decoding="async"
+          />
         </li>
       ))}
     </ul>

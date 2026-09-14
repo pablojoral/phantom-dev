@@ -4,8 +4,16 @@
  */
 
 export type PanelTone = 'paper' | 'red';
-/** Three phone screenshots (390×844 or any 9:19.5), fanned out behind the project card. */
-export type ScreenshotTriple = readonly [string, string, string];
+/** One phone screenshot with its real pixel size; the phone frames take this aspect ratio, so nothing is cropped. */
+export interface Screenshot {
+  readonly src: string;
+  readonly width: number;
+  readonly height: number;
+  /** Gallery alt text; falls back to "<project> screenshot <n>". */
+  readonly alt?: string | undefined;
+}
+/** Three phone screenshots, fanned out behind the project card and extracted in the gallery. */
+export type ScreenshotTriple = readonly [Screenshot, Screenshot, Screenshot];
 
 /** Emphasis is visual only: signature skills are the big torn strips, core the red bars, support the small chips. */
 export type SkillTier = 'signature' | 'core' | 'support';
@@ -67,9 +75,22 @@ export const skills: ReadonlyArray<Skill> = [
 
 /** "Case file" notices for projects under NDA; point `screenshots` at real captures otherwise (see README). */
 const CONFIDENTIAL_SCREENSHOTS: ScreenshotTriple = [
-  '/screenshots/confidential-1.svg',
-  '/screenshots/confidential-2.svg',
-  '/screenshots/confidential-3.svg',
+  { src: '/screenshots/confidential-1.svg', width: 390, height: 844 },
+  { src: '/screenshots/confidential-2.svg', width: 390, height: 844 },
+  { src: '/screenshots/confidential-3.svg', width: 390, height: 844 },
+];
+
+/** Toggled iQ, the product name of the Lighting Control app. */
+const TOGGLED_IQ_SCREENSHOTS: ScreenshotTriple = [
+  { src: '/screenshots/togglediq-1.jpg', width: 739, height: 1600, alt: 'Toggled iQ sign-in screen' },
+  { src: '/screenshots/togglediq-2.jpg', width: 739, height: 1600, alt: 'Toggled iQ device groups' },
+  { src: '/screenshots/togglediq-3.jpg', width: 739, height: 1600, alt: 'Toggled iQ users list' },
+];
+
+const TARJIMLY_SCREENSHOTS: ScreenshotTriple = [
+  { src: '/screenshots/tarjimly-1.jpg', width: 661, height: 1323, alt: 'Tarjimly home screen with language request form' },
+  { src: '/screenshots/tarjimly-2.jpg', width: 656, height: 1280, alt: 'Tarjimly chat with an interpreter' },
+  { src: '/screenshots/tarjimly-3.jpg', width: 652, height: 1316, alt: 'Tarjimly trainings list' },
 ];
 
 export const projects: ReadonlyArray<Project> = [
@@ -81,7 +102,7 @@ export const projects: ReadonlyArray<Project> = [
     stack: ['React Native', 'TypeScript', 'Zustand', 'TanStack Query', 'Fastlane'],
     result: 'Experimental voice assistant — AI transcription plus MCP tool calls — switches lighting zones hands-free.',
     tone: 'paper',
-    screenshots: CONFIDENTIAL_SCREENSHOTS,
+    screenshots: TOGGLED_IQ_SCREENSHOTS,
   },
   {
     target: '02',
@@ -91,7 +112,7 @@ export const projects: ReadonlyArray<Project> = [
     stack: ['React Native', 'Node.js', 'Express', 'Python', 'Django', 'PostgreSQL'],
     result: 'Matching optimization took sessions from under 20 to over 1,000.',
     tone: 'red',
-    screenshots: CONFIDENTIAL_SCREENSHOTS,
+    screenshots: TARJIMLY_SCREENSHOTS,
   },
   {
     target: '03',
