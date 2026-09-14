@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" role="img" aria-label="Confidential screenshot 2">
+<!-- Palette mirrors the src/styles/global.css tokens: ink #0B0B0C, red #E4002B, paper #F4F1EA, deep red #9E0020. SVGs loaded via img cannot read CSS custom properties. -->
+<rect width="390" height="844" fill="#0B0B0C"/>
+<polygon points="0,0 390,0 390,118 0,136" fill="#E4002B"/>
+<rect x="28" y="52" width="150" height="22" fill="#F4F1EA" transform="skewX(-12)"/>
+<text x="195" y="560" text-anchor="middle" font-family="Anton, Impact, sans-serif" font-size="260" fill="#F4F1EA" fill-opacity=".08">02</text>
+<polygon points="28,172 362,160 362,420 28,432" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="462" width="220" height="24" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="508" width="334" height="14" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="536" width="334" height="14" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="564" width="334" height="14" fill="#F4F1EA" fill-opacity=".25"/>
+<rect x="28" y="592" width="210" height="14" fill="#F4F1EA" fill-opacity=".25"/>
+<polygon points="42,700 348,700 340,756 34,756" fill="#E4002B"/>
+<rect x="120" y="722" width="150" height="14" fill="#F4F1EA" transform="skewX(-12)"/>
+<polygon points="0,136 390,118 390,844 0,844" fill="#0B0B0C" fill-opacity=".45"/>
+<g transform="translate(195 230) rotate(-18)" font-family="Anton, Impact, sans-serif" fill="#E4002B" fill-opacity=".85" text-anchor="middle"><rect x="-162" y="-63" width="324" height="126" fill="none" stroke="#E4002B" stroke-width="6" stroke-dasharray="140 3 90 4"/><rect x="-154" y="-55" width="308" height="110" fill="none" stroke="#E4002B" stroke-width="2.5" stroke-dasharray="120 3 70 4"/><text y="3" font-size="58" letter-spacing="2">CLASSIFIED</text><text y="41" font-size="23" letter-spacing="4">UNDER NDA</text></g>
+<polygon points="28,318 300,318 288,362 16,362" fill="#F4F1EA"/><text x="44" y="348" font-family="Anton, Impact, sans-serif" font-size="18" letter-spacing="1.5" fill="#0B0B0C" textLength="228" lengthAdjust="spacingAndGlyphs">ASK ME FOR A LIVE DEMO</text>
+</svg>

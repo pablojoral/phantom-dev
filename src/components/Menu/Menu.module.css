@@ -1,0 +1,68 @@
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  align-content: center;
+  padding: 90px clamp(16px, 4vw, 40px);
+  background: var(--red);
+  overflow: hidden auto;
+}
+.menu[hidden] { display: none; }
+.menu::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--halftone) 1px, transparent 1.3px);
+  background-size: 7px 7px;
+  opacity: .5;
+}
+.label {
+  position: absolute;
+  top: 22px;
+  left: clamp(16px, 4vw, 40px);
+  display: inline-block;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: var(--fs-3);
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  transform: skew(-12deg);
+}
+.label > span { display: inline-block; transform: skew(12deg); }
+.list { position: relative; display: grid; gap: clamp(10px, 2vw, 20px); justify-items: start; }
+.item:nth-child(1) { --i: 0; }
+.item:nth-child(2) { --i: 1; }
+.item:nth-child(3) { --i: 2; }
+.item:nth-child(4) { --i: 3; }
+.menu.isOpen .item { animation: slide .35s cubic-bezier(.2, .9, .3, 1.2) calc(var(--i) * 60ms) both; }
+.link {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--display);
+  /* 9vw rather than 10vw so EXPERIENCE (10 overlapping scraps) fits on one line at 375px. */
+  font-size: clamp(36px, 9vw, 120px);
+  line-height: 1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: .08em .35em;
+  text-decoration: none;
+  transform: skew(-12deg);
+}
+.link > span { display: inline-block; transform: skew(12deg); }
+.link:hover { box-shadow: 6px 6px 0 var(--paper); }
+
+@keyframes slide {
+  from { transform: translateX(-120vw); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu.isOpen .item { animation: none; }
+}

@@ -1,0 +1,13 @@
+.panel {
+  --panel-pad: clamp(20px, 3vw, 32px);
+  padding: var(--panel-pad);
+  /* Empty landing strip for an overlapping sheet (`--overlap` comes from the layout). */
+  padding-bottom: calc(var(--panel-pad) + var(--overlap, 0px));
+  background: var(--ink);
+  border: 5px solid var(--paper);
+  transform: skew(-3deg);
+}
+.inner { display: grid; gap: 22px; transform: skew(3deg); }
+
+.panel.mirror { transform: skew(3deg); }
+.mirror > .inner { transform: skew(-3deg); }

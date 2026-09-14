@@ -1,0 +1,22 @@
+/* The torn sheet itself is PaperSheet; this module only lays out the headline on it. */
+.headline { justify-self: start; }
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .12em .3em;
+  font-size: clamp(36px, 9vw, 64px);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.w { display: inline-flex; gap: .05em; white-space: nowrap; }
+.title :global(.rWrap) { animation: pop .3s calc(.3s + var(--i, 0) * 40ms) cubic-bezier(.2, .9, .3, 1.35) both; }
+
+@keyframes pop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title :global(.rWrap) { animation: none; }
+}

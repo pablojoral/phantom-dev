@@ -1,0 +1,55 @@
+/*
+ * One angular shard for both layers (the paper outline is the same shape, offset). On desktop the
+ * dossier's text ends at ≈68% of the figure's height; down to there the left edge stays at 26–34% of
+ * the figure's width, so the photo never covers text. From 70% the edge swings out to 16%, over the
+ * dossier's empty bottom padding. No vertex is sharper than ~60°, so the foot never reads as a needle.
+ */
+.frame, .figure {
+  --shard: polygon(34% 0, 100% 5%, 100% 94%, 66% 100%, 16% 95%, 30% 70%, 26% 38%);
+}
+
+.frame { background: var(--paper); clip-path: var(--shard); translate: -12px 12px; scale: 1.02; }
+
+.figure { position: relative; }
+.shot { position: absolute; inset: 0; clip-path: var(--shard); background: var(--ink-2); }
+.shotMissing { background: var(--ink); }
+/* Full-colour photo (what hover used to reveal) with the halftone dots, which hover never faded. */
+.shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--ink) 1px, transparent 1.3px);
+  background-size: 7px 7px;
+  opacity: .2;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 30% across puts the face right of the shard's left edge in tall desktop / tablet boxes. */
+  object-position: 30% 35%;
+}
+
+.missing {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  translate: -50% -50%;
+  padding: 8px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: var(--fs-2);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: skew(-12deg);
+}
+.missing > span { display: inline-block; transform: skew(12deg); }
+
+@media (min-width: 640px) {
+  .frame { translate: -18px 14px; }
+}

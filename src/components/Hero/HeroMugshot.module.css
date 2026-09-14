@@ -1,0 +1,62 @@
+.mugshot { position: relative; width: min(100%, 250px); justify-self: start; transform: rotate(-4deg); }
+
+.frame {
+  padding: 12px;
+  background: var(--paper);
+  border: 4px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+/* The photo is already square and centred on the face; a 2× zoom about the face crops it tight.
+   `isolation` keeps the tint's blend inside the crop. */
+.crop { position: relative; isolation: isolate; aspect-ratio: 1; overflow: hidden; background: var(--ink-2); }
+/* Halftone dots over photo and tint. */
+.crop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--ink) 1px, transparent 1.3px);
+  background-size: 7px 7px;
+  opacity: .2;
+}
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  transform-origin: 51% 47%;
+  scale: 2;
+  filter: grayscale(1) contrast(1.3);
+  transition: filter .3s ease;
+}
+/* Multiply keeps the darks dark and the face readable; screen would wash the dark sweater out to red. */
+.tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--red);
+  mix-blend-mode: multiply;
+  opacity: .55;
+  transition: opacity .3s ease;
+}
+/* Full colour on real hover of the whole mugshot (label and frame included); never sticks on touch. */
+@media (hover: hover) and (pointer: fine) {
+  .mugshot:hover .photo { filter: grayscale(0) contrast(1); }
+  .mugshot:hover .tint { opacity: 0; }
+}
+
+.label {
+  position: absolute;
+  top: -22px;
+  left: -18px;
+  display: inline-flex;
+  font-size: 30px;
+  line-height: 1;
+  text-transform: uppercase;
+  transform: rotate(-10deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo, .tint { transition: none; }
+}
