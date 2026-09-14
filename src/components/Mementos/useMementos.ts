@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
-import type { CSSProperties, KeyboardEvent, MouseEvent } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 import { projects } from '../../content/profile.ts';
 import type { Project } from '../../content/profile.ts';
+import { TOUCH_QUERY, useFanDismiss } from './useFanDismiss.ts';
 
 export interface OpenGallery {
   readonly project: Project;
@@ -9,20 +10,10 @@ export interface OpenGallery {
   readonly opener: HTMLElement;
 }
 
-export interface MementoCardView {
-  readonly project: Project;
-  /** Timeline names for the touch scroll fan: own (`--tl-self`) and the card below (`--tl-next-1/-2`). */
-  readonly style: CSSProperties;
-  /** No card below in the one-column layout, so the fan folds on its own timeline. */
-  readonly lastInOneColumn: boolean;
-  /** No card below in the two-column layout (last row). */
-  readonly lastInTwoColumns: boolean;
-}
-
 export interface MementosController {
-  readonly cards: ReadonlyArray<MementoCardView>;
-  /** `timeline-scope` names for the card list, so a card's shots can follow a sibling's timeline. */
-  readonly cardsStyle: CSSProperties;
+  readonly projects: ReadonlyArray<Project>;
+  /** `target` of the card whose fan is shown on touch, or null. At most one at a time. */
+  readonly openFan: string | null;
   readonly gallery: OpenGallery | null;
   readonly closeGallery: () => void;
   readonly onCardClick: (event: MouseEvent<HTMLElement>) => void;
@@ -31,49 +22,55 @@ export interface MementosController {
 
 const PROJECT_BY_TARGET: ReadonlyMap<string, Project> = new Map(projects.map((project) => [project.target, project]));
 
-const timelineName = (index: number): string => `--memento-${index}`;
-
-/*
- * The card "below" is index + 1 in one column and index + 2 in two columns; both are provided and
- * CSS picks per breakpoint. Custom properties carry the names because CSSProperties has no slot for them.
- */
-const toCardView = (project: Project, index: number, all: ReadonlyArray<Project>): MementoCardView => ({
-  project,
-  style: {
-    '--tl-self': timelineName(index),
-    ...(index + 1 < all.length ? { '--tl-next-1': timelineName(index + 1) } : {}),
-    ...(index + 2 < all.length ? { '--tl-next-2': timelineName(index + 2) } : {}),
-  } as CSSProperties,
-  lastInOneColumn: index + 1 >= all.length,
-  lastInTwoColumns: index + 2 >= all.length,
-});
-
-const CARD_VIEWS: ReadonlyArray<MementoCardView> = projects.map(toCardView);
-// Custom property: CSSProperties has no slot for it.
-const CARDS_STYLE = { '--tl-scope': projects.map((_, i) => timelineName(i)).join(', ') } as CSSProperties;
-
 const isInsideLink = (target: EventTarget | null): boolean =>
   target instanceof Element && target.closest('a') !== null;
 
-/** Cards carry `data-target`; one stable handler pair serves every card. */
+/**
+ * Cards carry `data-target`; one stable handler pair serves every card. Mouse and keyboard open the
+ * gallery directly (the fan is a hover effect there). On touch the first tap shows the card's fan and
+ * a second tap on the same card opens the gallery.
+ */
 export const useMementos = (): MementosController => {
   const [gallery, setGallery] = useState<OpenGallery | null>(null);
+  const [openFan, setOpenFan] = useState<string | null>(null);
+  // Mirrors `openFan` for event handlers, so a dismissal and the next tap never read a stale value.
+  const openFanRef = useRef<string | null>(null);
+  const fanCardRef = useRef<HTMLElement | null>(null);
 
-  const openFrom = useCallback((card: HTMLElement) => {
-    const project = PROJECT_BY_TARGET.get(card.dataset['target'] ?? '');
-    if (project !== undefined) {
-      setGallery({ project, opener: card });
-    }
+  const setFan = useCallback((card: HTMLElement | null) => {
+    const target = card?.dataset['target'] ?? null;
+    openFanRef.current = target;
+    fanCardRef.current = card;
+    setOpenFan(target);
   }, []);
+
+  const closeFan = useCallback(() => setFan(null), [setFan]);
+  useFanDismiss(openFan, fanCardRef, closeFan);
+
+  const openFrom = useCallback(
+    (card: HTMLElement) => {
+      closeFan();
+      const project = PROJECT_BY_TARGET.get(card.dataset['target'] ?? '');
+      if (project !== undefined) {
+        setGallery({ project, opener: card });
+      }
+    },
+    [closeFan],
+  );
 
   const closeGallery = useCallback(() => setGallery(null), []);
 
   const onCardClick = useCallback(
     (event: MouseEvent<HTMLElement>) => {
       if (isInsideLink(event.target)) return;
-      openFrom(event.currentTarget);
+      const card = event.currentTarget;
+      if (window.matchMedia(TOUCH_QUERY).matches && openFanRef.current !== card.dataset['target']) {
+        setFan(card);
+        return;
+      }
+      openFrom(card);
     },
-    [openFrom],
+    [openFrom, setFan],
   );
 
   const onCardKeyDown = useCallback(
@@ -86,5 +83,5 @@ export const useMementos = (): MementosController => {
     [openFrom],
   );
 
-  return { cards: CARD_VIEWS, cardsStyle: CARDS_STYLE, gallery, closeGallery, onCardClick, onCardKeyDown };
+  return { projects, openFan, gallery, closeGallery, onCardClick, onCardKeyDown };
 };
