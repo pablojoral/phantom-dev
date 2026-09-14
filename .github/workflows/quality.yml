@@ -1,0 +1,82 @@
+name: Quality
+
+on:
+  pull_request:
+    branches: [staging]
+  push:
+    branches: [staging]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      # `npm run build` runs `tsc -b` first, so this is also the type check. Base stays `/`.
+      - run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          include-hidden-files: true
+
+  lighthouse:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+
+  links:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      # linkedin.com answers bots with 999; mailto links are not checkable. The bare font hosts are
+      # preconnect targets (their roots 404), and the Pages site is this repo's own output, which a PR
+      # can't have deployed yet.
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --exclude-mail
+            --exclude linkedin\.com
+            --exclude localhost
+            --exclude '^https://fonts\.(googleapis|gstatic)\.com/?$'
+            --exclude 'pablojoral\.github\.io'
+            --base ./dist
+            'dist/**/*.html'
+            README.md
+          fail: true

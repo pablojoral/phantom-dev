@@ -1,0 +1,43 @@
+name: PR preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+    branches: [staging]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: preview-${{ github.event.number }}
+
+jobs:
+  preview:
+    # Dependabot runs get a read-only token, so the gh-pages push would fail; quality checks still run.
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        if: github.event.action != 'closed'
+        with:
+          node-version: 24
+          cache: npm
+
+      - if: github.event.action != 'closed'
+        run: npm ci
+
+      - name: Build
+        if: github.event.action != 'closed'
+        run: npm run build
+        env:
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}/pr-preview/pr-${{ github.event.number }}
+
+      # Deploys on open/sync, removes the preview on close, and keeps a sticky comment with the link.
+      - uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: dist
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: auto

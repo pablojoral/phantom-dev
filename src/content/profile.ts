@@ -3,6 +3,8 @@
  * the components only render what they find below.
  */
 
+import { asset } from './asset.ts';
+
 export type PanelTone = 'paper' | 'red';
 /** One phone screenshot with its real pixel size; the phone frames take this aspect ratio, so nothing is cropped. */
 export interface Screenshot {
@@ -54,7 +56,7 @@ export interface Education {
 
 export const name = 'Pablo Joral';
 /** Square head-and-shoulders portrait; drop the file at `public/profile.jpg`. */
-export const photo = { src: '/profile.jpg', alt: name } as const;
+export const photo = { src: asset('/profile.jpg'), alt: name } as const;
 /** Optional papercut word pinned to the framed mugshot's corner (e.g. 'Hello'); an empty string shows no label. */
 export const mugshotLabel = '';
 export const tagline = 'Software Engineer · Mobile Engineering';
@@ -82,22 +84,22 @@ export const skills: ReadonlyArray<Skill> = [
 
 /** "Case file" notices for projects under NDA; point `screenshots` at real captures otherwise (see README). */
 const CONFIDENTIAL_SCREENSHOTS: ScreenshotTriple = [
-  { src: '/screenshots/confidential-1.svg', width: 390, height: 844 },
-  { src: '/screenshots/confidential-2.svg', width: 390, height: 844 },
-  { src: '/screenshots/confidential-3.svg', width: 390, height: 844 },
+  { src: asset('/screenshots/confidential-1.svg'), width: 390, height: 844 },
+  { src: asset('/screenshots/confidential-2.svg'), width: 390, height: 844 },
+  { src: asset('/screenshots/confidential-3.svg'), width: 390, height: 844 },
 ];
 
 /** Toggled iQ, the product name of the Lighting Control app. */
 const TOGGLED_IQ_SCREENSHOTS: ScreenshotTriple = [
-  { src: '/screenshots/togglediq-1.jpg', width: 739, height: 1600, alt: 'Toggled iQ sign-in screen' },
-  { src: '/screenshots/togglediq-2.jpg', width: 739, height: 1600, alt: 'Toggled iQ device groups' },
-  { src: '/screenshots/togglediq-3.jpg', width: 739, height: 1600, alt: 'Toggled iQ users list' },
+  { src: asset('/screenshots/togglediq-1.jpg'), width: 739, height: 1600, alt: 'Toggled iQ sign-in screen' },
+  { src: asset('/screenshots/togglediq-2.jpg'), width: 739, height: 1600, alt: 'Toggled iQ device groups' },
+  { src: asset('/screenshots/togglediq-3.jpg'), width: 739, height: 1600, alt: 'Toggled iQ users list' },
 ];
 
 const TARJIMLY_SCREENSHOTS: ScreenshotTriple = [
-  { src: '/screenshots/tarjimly-1.jpg', width: 661, height: 1323, alt: 'Tarjimly home screen with language request form' },
-  { src: '/screenshots/tarjimly-2.jpg', width: 656, height: 1280, alt: 'Tarjimly chat with an interpreter' },
-  { src: '/screenshots/tarjimly-3.jpg', width: 652, height: 1316, alt: 'Tarjimly trainings list' },
+  { src: asset('/screenshots/tarjimly-1.jpg'), width: 661, height: 1323, alt: 'Tarjimly home screen with language request form' },
+  { src: asset('/screenshots/tarjimly-2.jpg'), width: 656, height: 1280, alt: 'Tarjimly chat with an interpreter' },
+  { src: asset('/screenshots/tarjimly-3.jpg'), width: 652, height: 1316, alt: 'Tarjimly trainings list' },
 ];
 
 export const projects: ReadonlyArray<Project> = [
