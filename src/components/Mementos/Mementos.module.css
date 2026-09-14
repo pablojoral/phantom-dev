@@ -1,0 +1,71 @@
+.cards { display: grid; gap: 36px; }
+/* touch-action: manipulation drops the double-tap-zoom wait, so one tap fires `click` straight away. */
+.card { position: relative; display: grid; cursor: pointer; touch-action: manipulation; transition: transform .2s ease, filter .2s ease; }
+.card > :global(.panel) { position: relative; z-index: 1; }
+.card:nth-child(odd) { transform: rotate(-2deg); }
+.card:nth-child(even) { transform: rotate(1.5deg); }
+/*
+ * Real hover only. On touch, a :hover rule makes the first tap apply the hover state (iOS then
+ * needs a second tap for `click`) and the state sticks after the tap.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    z-index: 2;
+    transform: rotate(0deg) translate(-4px, -4px);
+    filter: drop-shadow(5px 5px 0 var(--ink)) drop-shadow(5px 5px 0 var(--paper));
+  }
+}
+.card:focus-visible { outline: 3px solid var(--paper); outline-offset: 6px; }
+.card h3 { font-family: var(--display); font-size: var(--fs-5); line-height: .95; text-transform: uppercase; }
+.heist { max-width: 65ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li {
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  background: var(--ink);
+  color: var(--paper);
+  transform: skew(-8deg);
+}
+:global(.panel--red) .chips li { background: var(--paper); color: var(--ink); }
+.result { font-weight: 600; }
+.result strong {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--red-deep);
+  padding-right: 8px;
+}
+:global(.panel--red) .result strong { color: var(--ink); }
+
+@media (min-width: 640px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/*
+ * Touch: the fan scrubs with scroll instead (keyframes live in ScreenshotFan.module.css). Each card
+ * declares its own named view timeline (`--memento-<i>`, set inline), tracking its layout box rather
+ * than the shots' transforms; `timeline-scope` hoists every name to the list so a card's shots can
+ * also follow the card below. `--tl-next` is that card: index + 1 in one column, index + 2 in two
+ * (in two columns the DOM-next card sits beside, on the same scroll band). No z-index needed: each
+ * card's rotate() makes it a stacking context painted in DOM order, so a later card's phones paint
+ * over the card above it.
+ */
+@media (hover: none), (pointer: coarse) {
+  @supports (animation-timeline: view()) and (timeline-scope: --x) {
+    @media (prefers-reduced-motion: no-preference) {
+      .cards { timeline-scope: var(--tl-scope); }
+      .card { view-timeline: var(--tl-self) block; --tl-next: var(--tl-next-1); }
+      @media (min-width: 640px) {
+        .card { --tl-next: var(--tl-next-2); }
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .card :global(.panel) { transition: none; }
+}

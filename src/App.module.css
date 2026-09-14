@@ -1,0 +1,16 @@
+/* `clip`, not `hidden`: hidden makes .page a scroll container, which would capture every view() timeline. */
+.page { position: relative; overflow-x: clip; }
+/* Separate block so the minifier cannot collapse the fallback away. */
+@supports not (overflow-x: clip) {
+  .page { overflow-x: hidden; }
+}
+
+.dots {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--halftone) 1px, transparent 1.3px);
+  background-size: 7px 7px;
+  opacity: .55;
+}

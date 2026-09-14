@@ -1,0 +1,13 @@
+/* Torn paper sheet with an ink rim: clip-path on the sheet, the rim as hard drop-shadow steps on the tilted wrapper. */
+.paper {
+  transform: rotate(-5deg);
+  filter:
+    drop-shadow(4px 0 0 var(--ink)) drop-shadow(-4px 0 0 var(--ink))
+    drop-shadow(0 4px 0 var(--ink)) drop-shadow(0 -4px 0 var(--ink));
+}
+.paper.mirror { transform: rotate(5deg); }
+.sheet {
+  padding: clamp(18px, 3vw, 30px) clamp(22px, 3.5vw, 40px);
+  background: var(--paper);
+  clip-path: var(--tear-a);
+}

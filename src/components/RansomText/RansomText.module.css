@@ -1,0 +1,47 @@
+/*
+ * Each ransom letter is a scrap of magazine paper glued onto the panel.
+ * `.scrap` (global hook `rWrap`) is the glue layer: shadow, overlap, stacking, hero pop.
+ * `.letter` (global hook `r`) is the paper itself: face, tone, cut edge, tilt.
+ * clip-path clips box-shadow, so the shadow is a drop-shadow on the wrapper.
+ */
+.scrap {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  filter: drop-shadow(2px 3px 0 color-mix(in srgb, var(--ink) 55%, transparent));
+}
+.scrap + .scrap { margin-left: -.08em; }
+.scrap:nth-child(even) { z-index: 2; }
+
+.letter {
+  display: inline-block;
+  line-height: 1;
+  padding: .05em .12em;
+  transform: rotate(var(--rot, 0deg)) translateY(var(--dy, 0)) scale(var(--sc, 1));
+  transform-origin: 50% 60%;
+}
+
+/* Faces. Each sits at its own optical size so cap heights roughly match across a word. */
+.fontAnton   { font-family: var(--display); font-size: .96em; }
+.fontBangers { font-family: var(--ransom); }
+.fontPassion { font-family: var(--ransom-passion); font-weight: 700; font-size: 1.02em; }
+.fontMono    { font-family: var(--ransom-mono); font-size: .82em; }
+.fontSerif   { font-family: var(--ransom-serif); font-weight: 900; font-style: italic; font-size: .95em; }
+.fontBowlby  { font-family: var(--ransom-bowlby); font-size: .9em; }
+.fontAbril   { font-family: var(--ransom-abril); font-size: .98em; }
+.fontBebas   { font-family: var(--ransom-bebas); font-size: 1.08em; }
+
+/* Paper tones. */
+.toneInk        { background: var(--ink); color: var(--paper); }
+.tonePaper      { background: var(--paper); color: var(--ink); }
+.toneRedOnPaper { background: var(--paper); color: var(--red); }
+
+/* Cut edges: irregular quads and pentagons, never symmetric, corners nicked up to 7%; 6–8 carry a torn notch. */
+.cut1 { clip-path: polygon(3% 2%, 97% 0, 100% 94%, 5% 100%); }
+.cut2 { clip-path: polygon(0 6%, 95% 0, 100% 100%, 2% 96%); }
+.cut3 { clip-path: polygon(2% 0, 100% 4%, 96% 100%, 0 92%, 6% 55%); }
+.cut4 { clip-path: polygon(0 0, 94% 3%, 100% 45%, 97% 100%, 4% 97%); }
+.cut5 { clip-path: polygon(5% 4%, 60% 0, 100% 7%, 95% 96%, 0 100%); }
+.cut6 { clip-path: polygon(0 3%, 96% 0, 100% 96%, 55% 100%, 48% 91%, 41% 100%, 3% 97%); }
+.cut7 { clip-path: polygon(4% 0, 100% 2%, 97% 40%, 91% 47%, 97% 54%, 100% 100%, 0 95%); }
+.cut8 { clip-path: polygon(0 0, 30% 6%, 37% 0, 100% 3%, 96% 100%, 2% 100%, 5% 58%); }

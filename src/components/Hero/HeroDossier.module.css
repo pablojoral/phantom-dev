@@ -1,0 +1,23 @@
+/* The slam runs on the wrapper so its transform never fights the panel's skew. */
+.dossier { animation: slam .45s cubic-bezier(.2, .9, .3, 1.25) both; }
+
+.fields { display: grid; gap: 14px; margin: 0; }
+
+.lede {
+  max-width: 52ch;
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: var(--fs-3);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+@keyframes slam {
+  from { transform: scale(1.15) rotate(-6deg); }
+  65%  { transform: scale(.985) rotate(-1deg); }
+  to   { transform: scale(1) rotate(-2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dossier { animation: none; }
+}

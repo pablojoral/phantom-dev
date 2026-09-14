@@ -1,0 +1,47 @@
+.title { display: grid; gap: 12px; justify-items: start; }
+
+.tag {
+  display: inline-block;
+  max-width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+  /* .08em (not .12em) keeps "Software Engineer · Mobile Engineering" on one line beside the burger. */
+  letter-spacing: .08em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  transform: skew(-12deg);
+}
+.tag > span { display: inline-block; transform: skew(12deg); }
+
+/* Two stacked words, the second pushed right, tilted as one block; the rim comes from OutlinedRansom. */
+.name {
+  display: grid;
+  justify-items: start;
+  /* 11vw keeps JORAL (with its wide Rubik Mono / Bowlby scraps) clear of the burger at 375px. */
+  font-size: clamp(40px, 11vw, 84px);
+  font-weight: 400;
+  line-height: .9;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+}
+.w { display: inline-flex; gap: .05em; white-space: nowrap; }
+.w + .w { margin-top: .06em; margin-left: 1.1em; }
+
+/*
+ * The one-line chip needs ~250px; beside the burger reserve (100vw - 16px - 92px) that fits from
+ * ~358px. Below 360px it drops under the burger's corner (16px + 52px) and may run full width.
+ */
+@media (max-width: 359px) {
+  .tag { margin-top: 60px; }
+}
+
+@media (min-width: 640px) {
+  .tag { font-size: var(--fs-1); letter-spacing: .3em; }
+}
+
+@media (min-width: 1024px) {
+  .name { font-size: clamp(56px, 6.2vw, 84px); }
+}
